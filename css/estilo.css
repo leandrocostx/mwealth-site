@@ -472,7 +472,7 @@ address { font-style: normal; }
 }
 
 /* ---------- 19. Hero das páginas internas ---------- */
-.hero-interno { position: relative; isolation: isolate; overflow: hidden; padding-top: 93px; background: var(--marinho); color: var(--branco); }
+.hero-interno { position: relative; isolation: isolate; overflow: hidden; padding-top: 104px; background: var(--marinho); color: var(--branco); }
 .hero-interno .hero__degrade { z-index: -2; }
 .hero-interno__conteudo { display: flex; flex-direction: column; align-items: flex-start; gap: 56px; padding: 120px var(--gutter); }
 .caminho { display: flex; flex-wrap: wrap; gap: 16px; font: 500 12px/1 var(--fonte-texto); letter-spacing: .14em; text-transform: uppercase; color: var(--lilas); }
@@ -714,4 +714,11 @@ address { font-style: normal; }
   .js .mapa__imagem { clip-path: none !important; }
   .js .mapa__local { opacity: 1 !important; transform: none !important; }
   .sobre__foto img { transform: none !important; }
+}
+
+/* ---------- 26. Celular: em coluna, as larguras do desktop não podem virar altura ---------- */
+@media (max-width: 860px) {
+  .com-recuo > *, .titulo-texto > *, .titulo-link > *, .hero-interno__intro > *,
+  .post-rodape-titulo > *, .destaque > *, .sobre__manifesto > *, .sobre__foto-numeros > * { flex: none !important; width: 100%; }
+  .autoria { width: auto !important; }
 }

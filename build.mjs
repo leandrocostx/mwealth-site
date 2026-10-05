@@ -10,7 +10,7 @@
 // Links com data-nav="x" ganham aria-current="page" quando a página
 // declara <!-- @pagina ativo="x" -->.
 
-import { readFileSync, writeFileSync, mkdirSync, rmSync, cpSync, readdirSync, statSync, existsSync, watch } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, rmSync, cpSync, readdirSync, statSync, existsSync } from 'node:fs';
 import { join, dirname, extname, relative } from 'node:path';
 import { createServer } from 'node:http';
 import { fileURLToPath } from 'node:url';
@@ -84,11 +84,13 @@ if (process.argv.includes('--dev')) {
     res.end(readFileSync(arquivo));
   }).listen(3000, () => console.log('→ http://localhost:3000'));
 
-  let agendado;
-  for (const pasta of ['src', ...ESTATICOS]) {
-    watch(join(raiz, pasta), { recursive: true }, () => {
-      clearTimeout(agendado);
-      agendado = setTimeout(() => { try { construir(); } catch (e) { console.error(e.message); } }, 120);
-    });
-  }
+  // verifica a data dos arquivos a cada segundo (fs.watch não funciona em pastas do Windows abertas pelo WSL)
+  const assinatura = () => ['src', ...ESTATICOS]
+    .flatMap(pasta => readdirSync(join(raiz, pasta), { recursive: true }).map(f => join(raiz, pasta, f)))
+    .reduce((maior, f) => Math.max(maior, statSync(f).mtimeMs), 0);
+  let ultima = assinatura();
+  setInterval(() => {
+    const atual = assinatura();
+    if (atual !== ultima) { ultima = atual; try { construir(); } catch (e) { console.error(e.message); } }
+  }, 1000);
 }
