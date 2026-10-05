@@ -1,0 +1,82 @@
+<!-- @pagina ativo="blog" -->
+<!doctype html>
+<html lang="pt-BR" id="topo">
+<head>
+  <!-- @parte head titulo="Blog — Conteúdos para quem pensa no longo prazo | M Wealth" descricao="Análises, estudos e reflexões da equipe M Wealth sobre patrimônio, investimentos e planejamento." -->
+</head>
+<body class="blog-pagina">
+  <!-- @parte cabecalho variante="interno" -->
+
+  <main id="conteudo">
+    <section class="hero-interno">
+      <!-- @parte hero-interno-fundo -->
+      <div class="hero-interno__conteudo">
+        <nav class="caminho surgir" aria-label="Você está em">
+          <a href="/">Início</a><span aria-hidden="true">/</span><span aria-current="page">Blog</span>
+        </nav>
+        <div class="titulo-texto">
+          <h1 class="t-display titulo-texto__titulo mascara mascara--entrada">
+            <span class="linha"><span>Conteúdos para quem</span></span>
+            <span class="linha"><span>pensa no <em>longo prazo</em>.</span></span>
+          </h1>
+          <p class="titulo-texto__texto surgir">Análises, estudos e reflexões da equipe M Wealth sobre patrimônio, investimentos e planejamento.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="secao secao--papel lista-posts" aria-label="Posts">
+      <div class="filtros" data-filtros>
+        <div class="filtros__categorias" role="group" aria-label="Filtrar por categoria">
+          <button class="filtro" type="button" data-filtro="Todos" aria-pressed="true">Todos</button>
+          <button class="filtro" type="button" data-filtro="Artigos" aria-pressed="false">Artigos</button>
+          <button class="filtro" type="button" data-filtro="Vídeos" aria-pressed="false">Vídeos</button>
+          <button class="filtro" type="button" data-filtro="Destaques" aria-pressed="false">Destaques</button>
+        </div>
+        <p class="filtros__total" data-total>7 conteúdos</p>
+      </div>
+
+      <div class="lista-posts__itens" data-lista-posts style="display: contents">
+        <article class="destaque" data-categoria="Artigos">
+          <a class="destaque__imagem" href="/blog/filosofia-de-alocacao" tabindex="-1" aria-hidden="true">
+            <img src="/assets/img/post-placeholder.jpg" alt="" width="1200" height="675">
+          </a>
+          <div class="destaque__texto">
+            <p class="rotulo rotulo--sem-traco destaque__rotulo" style="color: var(--cinza)">Em destaque</p>
+            <p class="meta"><span class="meta__categoria">Artigos</span><span class="meta__data">02 out 2026<span class="so-desktop-inline">&nbsp;&nbsp;·&nbsp;&nbsp;6 min de leitura</span></span></p>
+            <h2 class="t-titulo1"><a href="/blog/filosofia-de-alocacao">Filosofia de <em>Alocação</em></a></h2>
+            <p>Na M Wealth, acreditamos que a gestão de patrimônio começa muito antes da escolha de qualquer ativo. Começa na escuta atenta: quem é o cliente, o que construiu ao longo da vida e o que deseja preservar.</p>
+            <a class="link" href="/blog/filosofia-de-alocacao">Leia o artigo<span class="link__seta">→</span></a>
+          </div>
+        </article>
+
+        <div class="divisor" role="presentation"></div>
+
+        <div class="grade-posts">
+          <!-- @parte card-post url="#" imagem="/assets/img/webinar-internacionalizacao.jpg" alt="Globo noturno com conexões de luz entre continentes" categoria="Destaques" data="29 set 2026" titulo="Webinar: internacionalização como ferramenta de perpetuidade de patrimônios" resumo="Com a 4tax, um encontro sobre patrimônio global, proteção do legado familiar e eficiência tributária. Dia 06/10, às 17h, pelo Zoom." extra="" -->
+          <!-- @parte card-post url="#" imagem="/assets/img/post-placeholder.jpg" alt="Imagem do post (provisória)" categoria="Artigos" data="25 set 2026" titulo="Rebalanceamento de carteiras: agir menos, no momento certo" resumo="Simulamos sete anos de mercado para descobrir a faixa de tolerância ideal antes de rebalancear uma carteira no Brasil." extra="" -->
+          <!-- @parte card-post url="#" imagem="/assets/img/post-placeholder.jpg" alt="Imagem do post (provisória)" categoria="Artigos" data="18 set 2026" titulo="O que define um relacionamento de valor em um Multi-Family Office?" resumo="Confiança, conhecimento sobre a família e uma atuação consultiva, e não uma sucessão de ofertas." extra="" -->
+          <!-- @parte card-post url="#" imagem="/assets/img/post-placeholder.jpg" alt="Imagem do post (provisória)" categoria="Vídeos" data="11 set 2026" titulo="Série com parceiros: episódio 1 (placeholder)" resumo="Conversa com parceiros da M Wealth sobre temas do patrimônio familiar. Conteúdo a definir." extra="extra-celular" -->
+          <!-- @parte card-post url="#" imagem="/assets/img/post-placeholder.jpg" alt="Imagem do post (provisória)" categoria="Vídeos" data="28 ago 2026" titulo="Série com parceiros: episódio 2 (placeholder)" resumo="Conversa com parceiros da M Wealth sobre temas do patrimônio familiar. Conteúdo a definir." extra="extra-celular" -->
+          <!-- @parte card-post url="#" imagem="/assets/img/post-placeholder.jpg" alt="Imagem do post (provisória)" categoria="Artigos" data="21 ago 2026" titulo="Título do post (placeholder)" resumo="Resumo curto do post, com duas ou três linhas de texto para despertar o interesse do leitor." extra="extra-celular" -->
+        </div>
+      </div>
+
+      <nav class="paginacao so-desktop-flex" aria-label="Paginação">
+        <span class="paginacao__anterior">←&nbsp;&nbsp;Anteriores</span>
+        <div class="paginacao__paginas">
+          <a href="/blog" aria-current="page">1</a>
+          <a href="#">2</a>
+          <a href="#">3</a>
+        </div>
+        <a href="#">Próximos&nbsp;&nbsp;→</a>
+      </nav>
+      <button class="botao botao--contorno-claro carregar-mais so-celular" type="button" data-carregar-mais>Carregar mais conteúdos</button>
+    </section>
+
+    <!-- @parte chamada-final -->
+  </main>
+
+  <!-- @parte rodape -->
+  <!-- @parte scripts -->
+</body>
+</html>

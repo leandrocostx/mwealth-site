@@ -1,0 +1,12 @@
+{
+  "name": "mwealth-site",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Protótipo HTML do novo site da M Wealth (redesign) — fase 5, para aprovação",
+  "type": "module",
+  "scripts": {
+    "dev": "node build.mjs --dev",
+    "build": "node build.mjs"
+  },
+  "engines": { "node": ">=20" }
+}
