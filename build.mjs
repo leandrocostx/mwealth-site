@@ -31,6 +31,17 @@ function montarParte(nome, valores) {
   return html.replace(/\{\{([\w-]+)\}\}/g, (_, chave) => valores[chave] ?? '');
 }
 
+// termos que nunca podem quebrar de linha (senão "Office" fica sozinho na linha de baixo).
+// Só no texto visível do <body>: <title> e atributos não aceitam HTML.
+const SEM_QUEBRA = ['Multi-Family Office'];
+function protegerTermos(html) {
+  const i = html.indexOf('<body');
+  if (i < 0) return html;
+  const corpo = html.slice(i).replace(/>([^<]+)</g, (_, texto) =>
+    '>' + SEM_QUEBRA.reduce((t, termo) => t.split(termo).join(`<span class="sem-quebra">${termo}</span>`), texto) + '<');
+  return html.slice(0, i) + corpo;
+}
+
 function montarPagina(arquivo) {
   let html = readFileSync(arquivo, 'utf8');
   const pagina = lerAtributos((html.match(/<!--\s*@pagina([^>]*?)-->/) || [])[1]);
@@ -40,7 +51,7 @@ function montarPagina(arquivo) {
   if (pagina.ativo) {
     html = html.replace(new RegExp(`data-nav="${pagina.ativo}"`, 'g'), `data-nav="${pagina.ativo}" aria-current="page"`);
   }
-  return html;
+  return protegerTermos(html);
 }
 
 function listarHtml(pasta) {
@@ -70,8 +81,8 @@ construir();
 if (process.argv.includes('--dev')) {
   const tipos = {
     '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript',
-    '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp',
-    '.pdf': 'application/pdf', '.ico': 'image/x-icon',
+    '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.avif': 'image/avif',
+    '.pdf': 'application/pdf', '.ico': 'image/x-icon', '.woff2': 'font/woff2',
   };
   // mesmas regras de URL da Vercel (cleanUrls): /estrutura → estrutura.html
   createServer((req, res) => {

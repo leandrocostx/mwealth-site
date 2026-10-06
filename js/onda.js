@@ -9,7 +9,6 @@
    ========================================================= */
 (function () {
   const ONDA = {
-    imagem: '/assets/img/hero-onda.jpg',
     velocidade: 0.92,      // 92
     intensidade: 0.01625,  // 65 → 0,65 × 0,025
     parallax: 0.30,        // 30%, só desktop
@@ -54,11 +53,26 @@
       gl_FragColor = texture2D(u_img, clamp(uv, 0.002, 0.998));
     }`;
 
+  // Sem placa de vídeo (WebGL por software: SwiftShader, llvmpipe) cada quadro trava a página
+  // por centenas de ms; nesse caso fica a imagem parada, como em "reduzir movimento".
+  // O teste usa um canvas fora da página: um contexto criado e abandonado no canvas visível
+  // atrasa o primeiro quadro da página.
+  function temPlacaDeVideo() {
+    const gl = document.createElement('canvas').getContext('webgl', { failIfMajorPerformanceCaveat: true });
+    if (!gl) return false;
+    const info = gl.getExtension('WEBGL_debug_renderer_info');
+    const nome = info ? gl.getParameter(info.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER);
+    gl.getExtension('WEBGL_lose_context')?.loseContext();
+    return !/swiftshader|llvmpipe|software/i.test(nome);
+  }
+
   function iniciar(caixa) {
     const secao = caixa.parentElement;
     const canvas = caixa.querySelector('canvas');
     ligarParallax(caixa, secao);
     if (reduzir.matches || !canvas) return;
+
+    if (!temPlacaDeVideo()) return;
 
     const gl = canvas.getContext('webgl', { alpha: false, antialias: false, powerPreference: 'low-power' });
     if (!gl) return;
@@ -104,8 +118,10 @@
     };
     const iniciarLaco = () => { if (!rodando) { rodando = true; anterior = performance.now(); requestAnimationFrame(quadro); } };
 
-    const img = new Image();
-    img.onload = () => {
+    // textura = a foto que o navegador já escolheu no <picture> (AVIF retrato no celular etc.), sem baixar de novo
+    const img = caixa.querySelector('.onda__parada img');
+    if (!img) return;
+    const usarFoto = () => {
       gl.bindTexture(gl.TEXTURE_2D, gl.createTexture());
       gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, img);
@@ -118,7 +134,7 @@
       redimensionar();
       iniciarLaco();
     };
-    img.src = ONDA.imagem;
+    if (img.complete && img.naturalWidth) usarFoto(); else img.addEventListener('load', usarFoto, { once: true });
 
     new ResizeObserver(redimensionar).observe(canvas);
     new IntersectionObserver(([e]) => { visivel = e.isIntersecting; if (visivel) iniciarLaco(); }).observe(secao);

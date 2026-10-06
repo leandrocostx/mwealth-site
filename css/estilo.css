@@ -4,6 +4,15 @@
    Celular: até 860px. Menu "hambúrguer": até 1180px.
    ========================================================= */
 
+/* ---------- 0. Fontes (Bitter e Inter, OFL — servidas pelo próprio site) ---------- */
+/* latin cobre o português; latin-ext só baixa se aparecer um caractere fora dele */
+@font-face { font-family: "Bitter"; font-style: normal; font-weight: 300; font-display: swap; src: url("/assets/fontes/bitter-300-latin.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Bitter"; font-style: normal; font-weight: 300; font-display: swap; src: url("/assets/fontes/bitter-300-latin-ext.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Bitter"; font-style: italic; font-weight: 300; font-display: swap; src: url("/assets/fontes/bitter-300-italic-latin.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Bitter"; font-style: italic; font-weight: 300; font-display: swap; src: url("/assets/fontes/bitter-300-italic-latin-ext.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 400 600; font-display: swap; src: url("/assets/fontes/inter-latin.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 400 600; font-display: swap; src: url("/assets/fontes/inter-latin-ext.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+
 /* ---------- 1. Tokens (variáveis do Figma) ---------- */
 :root {
   /* cores oficiais */
@@ -63,6 +72,11 @@ address { font-style: normal; }
 
 /* ---------- 3. Tipografia (estilos de texto do Figma) ---------- */
 .t-manchete, .t-display, .t-titulo1, .t-titulo2, .t-titulo3 { font-family: var(--fonte-titulo); font-weight: 300; }
+/* sem palavra sozinha na última linha: títulos com linhas equilibradas, textos sem "viúvas" */
+h1, h2, h3, .t-manchete, .t-display, .t-titulo1, .t-titulo2, .t-titulo3, .t-italico { text-wrap: balance; }
+p, li, blockquote { text-wrap: pretty; }
+.etapa__texto { text-wrap: balance; }   /* coluna estreita: o "pretty" não dá conta */
+.sem-quebra { white-space: nowrap; }
 .t-manchete { font-size: clamp(44px, 7.778vw, 112px); line-height: 1; letter-spacing: -.025em; }
 .t-display  { font-size: clamp(44px, 5.278vw, 76px); line-height: 1.08; letter-spacing: -.02em; }
 .t-titulo1  { font-size: clamp(34px, 3.612vw, 52px); line-height: 1.12; letter-spacing: -.015em; }
@@ -80,7 +94,7 @@ address { font-style: normal; }
 }
 
 /* palavra-chave em itálico: bege sobre fundo escuro */
-.fundo-escuro em, .hero em, .hero-interno h1 em, .secao--escura em, .abordagem em, .chamada em, .papel-nosso em { color: var(--bege); }
+.fundo-escuro em, .hero em, .hero-interno h1 em, .secao--escura em, .abordagem em, .chamada em { color: var(--bege); }
 
 /* rótulo de seção: "—— 01 — Sobre nós" */
 .rotulo { display: inline-flex; align-items: center; gap: 12px; font: 500 12px/1 var(--fonte-texto); letter-spacing: .14em; text-transform: uppercase; color: var(--azul); }
@@ -172,7 +186,8 @@ address { font-style: normal; }
 
 /* ---------- 6. Onda (WebGL) e grade arquitetônica ---------- */
 .onda { position: absolute; inset: -12% 0; z-index: -3; will-change: transform; }
-.onda__parada { position: absolute; inset: 0; background: url("/assets/img/hero-onda.jpg") center / cover no-repeat; }
+.onda__parada { position: absolute; inset: 0; }
+.onda__parada img { width: 100%; height: 100%; object-fit: cover; }
 .onda__canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 .onda.com-webgl .onda__parada { display: none; }
 
@@ -295,6 +310,7 @@ address { font-style: normal; }
 .sobre__frase .palavra { transition: color .35s; }
 .sobre__foto-numeros { display: flex; align-items: flex-end; gap: 80px; width: 100%; }
 .sobre__foto { flex: 0 1 520px; aspect-ratio: 520 / 640; border-radius: 4px; overflow: hidden; }
+.sobre__foto picture, .membro__foto picture { display: contents; }   /* o <picture> só escolhe o arquivo; quem ocupa a caixa é o <img> */
 .sobre__foto img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.08); transition: transform 1.6s var(--curva); }
 .sobre__foto.visivel img, html:not(.js) .sobre__foto img { transform: none; }
 .sobre__texto-numeros { flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 56px; }
@@ -401,6 +417,7 @@ address { font-style: normal; }
 /* ---------- 14. Abordagem ---------- */
 .abordagem { position: relative; isolation: isolate; overflow: hidden; display: flex; flex-direction: column; align-items: center; gap: 56px; padding: 160px var(--gutter); background: var(--marinho); color: var(--branco); }
 .abordagem__fundo { position: absolute; inset: -15% 0; z-index: -1; background: url("/assets/img/abordagem-onda.jpg") center / cover no-repeat; opacity: .25; will-change: transform; }
+.abordagem__fundo { background-image: image-set(url("/assets/img/abordagem-onda.avif") type("image/avif"), url("/assets/img/abordagem-onda.jpg") type("image/jpeg")); }
 .abordagem__frase { max-width: 1000px; text-align: center; }
 .pilares { display: flex; gap: 40px; width: 100%; padding-top: 40px; }
 .pilar { flex: 1; display: flex; flex-direction: column; gap: 16px; padding-top: 28px; border-top: 1px solid var(--borda-escuro); }
@@ -453,6 +470,11 @@ address { font-style: normal; }
 /* ---------- 17. Chamada final ---------- */
 .chamada { position: relative; isolation: isolate; overflow: hidden; display: flex; flex-direction: column; align-items: center; gap: 40px; padding: 180px var(--gutter); background: var(--marinho); color: var(--branco); text-align: center; }
 .chamada__fundo { position: absolute; inset: 0; z-index: -1; background: url("/assets/img/hero-onda.jpg") center / cover no-repeat; opacity: .35; }
+/* mesmos arquivos do hero (já em cache) */
+.chamada__fundo { background-image: image-set(url("/assets/img/hero-onda.avif") type("image/avif"), url("/assets/img/hero-onda.jpg") type("image/jpeg")); }
+@media (max-width: 860px) and (orientation: portrait) {
+  .chamada__fundo { background-image: image-set(url("/assets/img/hero-onda-retrato.avif") type("image/avif"), url("/assets/img/hero-onda.jpg") type("image/jpeg")); }
+}
 .chamada__titulo { white-space: nowrap; }
 .chamada__titulo .linha { padding-inline: .05em; }
 .chamada__botoes { display: flex; gap: 16px; }
@@ -612,9 +634,16 @@ address { font-style: normal; }
 .solucao__titulo { flex: 0 1 440px; }
 .solucao__texto { flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 24px; font-size: 18px; line-height: 1.6; color: var(--cinza); }
 
-.papel-nosso { position: relative; isolation: isolate; overflow: hidden; display: flex; flex-direction: column; align-items: center; gap: 48px; padding: 180px var(--gutter); background: var(--marinho); color: var(--branco); text-align: center; }
+.papel-nosso { position: relative; isolation: isolate; overflow: hidden; display: flex; flex-direction: column; align-items: center; gap: 48px; padding: 180px var(--gutter); background: var(--papel); color: var(--marinho); text-align: center; }
+/* onda branca (textura do site atual) "tingida" sobre o papel */
+.papel-nosso__fundo { position: absolute; inset: 0; z-index: -1; background: url("/assets/img/textura-clara.webp") center / cover no-repeat; opacity: .28; mix-blend-mode: multiply; }
+.papel-nosso__fundo { background-image: image-set(url("/assets/img/textura-clara.avif") type("image/avif"), url("/assets/img/textura-clara.webp") type("image/webp")); }
+@media (max-width: 860px) and (orientation: portrait) {
+  .papel-nosso__fundo { background-image: image-set(url("/assets/img/textura-clara-retrato.avif") type("image/avif"), url("/assets/img/textura-clara-retrato.webp") type("image/webp")); }
+}
+.papel-nosso em { color: var(--azul); }
 .papel-nosso__frase { max-width: 1060px; }
-.papel-nosso__texto { max-width: 640px; font-size: 18px; line-height: 1.6; color: var(--lilas); }
+.papel-nosso__texto { max-width: 640px; font-size: 18px; line-height: 1.6; color: var(--cinza); }
 
 @media (max-width: 860px) {
   .solucoes-pagina .hero-interno__conteudo { padding-top: 162px; }

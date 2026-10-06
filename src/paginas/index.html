@@ -11,7 +11,11 @@
     <!-- HERO -->
     <section class="hero" data-hero>
       <div class="onda" data-onda aria-hidden="true">
-        <div class="onda__parada"></div>
+        <picture class="onda__parada">
+          <source type="image/avif" media="(max-width: 860px) and (orientation: portrait)" srcset="/assets/img/hero-onda-retrato.avif">
+          <source type="image/avif" srcset="/assets/img/hero-onda.avif">
+          <img src="/assets/img/hero-onda.jpg" alt="" width="1920" height="1579" fetchpriority="high">
+        </picture>
         <canvas class="onda__canvas"></canvas>
       </div>
       <div class="hero__degrade" aria-hidden="true"></div>
@@ -45,11 +49,11 @@
         <p>Através de um único ponto de contato, nossos clientes acessam os investimentos das principais instituições financeiras do mercado nacional e internacional.</p>
       </div>
       <ul class="ecossistema__logos" data-sequencia>
-        <li class="ecossistema__logo ecossistema__logo--xp"><img src="/assets/logos/xp.png" alt="XP Investimentos" width="51" height="46"></li>
-        <li class="ecossistema__logo ecossistema__logo--btg"><img src="/assets/logos/btg.png" alt="BTG Pactual" width="54" height="48"></li>
-        <li class="ecossistema__logo ecossistema__logo--schwab"><img src="/assets/logos/charles-schwab.png" alt="Charles Schwab" width="46" height="46"></li>
-        <li class="ecossistema__logo ecossistema__logo--agora"><img src="/assets/logos/agora.png" alt="Ágora — uma empresa Bradesco" width="118" height="40"></li>
-        <li class="ecossistema__logo ecossistema__logo--jpm"><img src="/assets/logos/jp-morgan.png" alt="J.P. Morgan Private Bank" width="120" height="42"></li>
+        <li class="ecossistema__logo ecossistema__logo--xp"><img src="/assets/logos/xp.webp" alt="XP Investimentos" width="51" height="46" loading="lazy"></li>
+        <li class="ecossistema__logo ecossistema__logo--btg"><img src="/assets/logos/btg.webp" alt="BTG Pactual" width="54" height="48" loading="lazy"></li>
+        <li class="ecossistema__logo ecossistema__logo--schwab"><img src="/assets/logos/charles-schwab.webp" alt="Charles Schwab" width="46" height="46" loading="lazy"></li>
+        <li class="ecossistema__logo ecossistema__logo--agora"><img src="/assets/logos/agora.webp" alt="Ágora — uma empresa Bradesco" width="118" height="40" loading="lazy"></li>
+        <li class="ecossistema__logo ecossistema__logo--jpm"><img src="/assets/logos/jp-morgan.webp" alt="J.P. Morgan Private Bank" width="120" height="42" loading="lazy"></li>
       </ul>
     </section>
 
@@ -65,7 +69,7 @@
       </div>
       <div class="sobre__foto-numeros">
         <figure class="sobre__foto" data-zoom>
-          <img src="/assets/img/recepcao.jpg" alt="Recepção do escritório da M Wealth, com o logo na parede de madeira" width="520" height="640" loading="lazy">
+          <picture><source type="image/avif" srcset="/assets/img/recepcao.avif"><img src="/assets/img/recepcao-1040.jpg" alt="Recepção do escritório da M Wealth, com o logo na parede de madeira" width="520" height="640" loading="lazy"></picture>
         </figure>
         <div class="sobre__texto-numeros">
           <p class="t-grande sobre__texto">Nossos clientes contam com um trabalho individualizado, apoiado por um grupo de especialistas capazes de planejar e executar estratégias para todas as esferas do seu patrimônio.</p>
