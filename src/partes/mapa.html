@@ -1,7 +1,32 @@
 <div class="mapa" data-mapa>
-        <img class="mapa__imagem" src="/assets/img/mapa.png" alt="Mapa-múndi com os escritórios da M Wealth no Brasil e em Miami, ligados por arcos" width="1600" height="1041" loading="lazy">
-        <span class="mapa__pulso mapa__pulso--miami" aria-hidden="true"></span>
-        <span class="mapa__pulso mapa__pulso--brasil" aria-hidden="true"></span>
+        <svg class="mapa__desenho" viewBox="0 0 1600 1041" role="img" aria-label="Mapa-múndi com os escritórios da M Wealth no Brasil e em Miami, ligados por arcos">
+          <defs>
+            <linearGradient id="mapa-arco-forte"><stop offset="0" stop-color="#dcc9b1" stop-opacity=".35"/><stop offset="1" stop-color="#dcc9b1" stop-opacity=".9"/></linearGradient>
+            <linearGradient id="mapa-arco-suave"><stop offset="0" stop-color="#dcc9b1" stop-opacity=".18"/><stop offset="1" stop-color="#dcc9b1" stop-opacity=".5"/></linearGradient>
+            <radialGradient id="mapa-luz-gradiente"><stop offset="0" stop-color="#fff"/><stop offset=".45" stop-color="#fff" stop-opacity=".9"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+            <mask id="mapa-luz-mascara" maskUnits="userSpaceOnUse" x="0" y="0" width="1600" height="1041"><circle class="mapa__luz-foco" r="0" fill="url(#mapa-luz-gradiente)"/></mask>
+            <g id="mapa-simbolo"><path d="M1.726 1.725h55.597v55.597H1.726z" fill="#131925" stroke="#fff" stroke-width="3.448"/><path d="M19.888 42.763h-4.254V14.287h4.756l8.699 20.027h.145l8.7-20.027h4.735v28.476h-4.276V23.09h-.188l-7.363 16.647h-3.401L20.055 23.09h-.167z" fill="#fff"/></g>
+          </defs>
+          <!-- pontos: mesma malha do mapa do Figma, um <circle> por ponto -->
+          <g class="mapa__base"><!-- @parte mapa-pontos --></g>
+          <!-- lanterna: cópia dos pontos, acesa só dentro do círculo que segue o mouse (principal.js) -->
+          <g class="mapa__luz" mask="url(#mapa-luz-mascara)" aria-hidden="true"><use href="#mapa-pontos"/></g>
+          <g class="mapa__arcos" fill="none">
+            <path class="mapa__arco" d="M263.2 272.4A155.6 155.6 0 1 1 567.8 336.6A155.6 155.6 0 1 1 263.2 272.4" stroke="url(#mapa-arco-forte)" pathLength="1"/>
+            <path class="mapa__arco" d="M262.6 272.4A253.7 253.7 0 1 1 765.6 338.4A253.7 253.7 0 1 1 262.6 272.4" stroke="url(#mapa-arco-forte)" pathLength="1"/>
+            <path class="mapa__arco" d="M431.9 607.1A236.9 236.9 0 1 1 844.3 374.1A236.9 236.9 0 1 1 431.9 607.1" stroke="url(#mapa-arco-suave)" pathLength="1"/>
+            <path class="mapa__arco" d="M439.8 615.1A381.8 381.8 0 1 1 1198.4 701.5A381.8 381.8 0 1 1 439.8 615.1" stroke="url(#mapa-arco-forte)" pathLength="1"/>
+          </g>
+          <!-- escritórios (posições do Figma) -->
+          <g class="mapa__marco" transform="translate(263.5 272.5)">
+            <rect class="mapa__pulso" x="-36" y="-36" width="72" height="72" rx="4"/>
+            <use href="#mapa-simbolo" transform="translate(-36 -36) scale(1.2)"/>
+          </g>
+          <g class="mapa__marco mapa__marco--brasil" transform="translate(421.5 613)">
+            <rect class="mapa__pulso" x="-36" y="-36" width="72" height="72" rx="4"/>
+            <use href="#mapa-simbolo" transform="translate(-36 -36) scale(1.2)"/>
+          </g>
+        </svg>
         <div class="mapa__local mapa__local--miami">
           <p class="mapa__cidade">Miami</p>
           <p class="mapa__detalhe">Estrutura internacional</p>

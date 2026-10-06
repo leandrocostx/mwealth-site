@@ -87,7 +87,7 @@ if (process.argv.includes('--dev')) {
   // verifica a data dos arquivos a cada segundo (fs.watch não funciona em pastas do Windows abertas pelo WSL)
   const assinatura = () => ['src', ...ESTATICOS]
     .flatMap(pasta => readdirSync(join(raiz, pasta), { recursive: true }).map(f => join(raiz, pasta, f)))
-    .reduce((maior, f) => Math.max(maior, statSync(f).mtimeMs), 0);
+    .reduce((maior, f) => { try { return Math.max(maior, statSync(f).mtimeMs); } catch { return maior; } }, 0);  // arquivo temporário pode sumir no meio
   let ultima = assinatura();
   setInterval(() => {
     const atual = assinatura();

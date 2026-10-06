@@ -27,18 +27,9 @@
   window.addEventListener('scroll', pedir, { passive: true });
   window.addEventListener('resize', pedir);
 
-  /* ---------- cabeçalho: sólido ao rolar; some ao descer, volta ao subir ---------- */
+  /* ---------- cabeçalho: vira vidro ao rolar e fica sempre visível ---------- */
   const cabecalho = $('[data-cabecalho]');
-  let ultimoY = window.scrollY;
-  aoRolar.push(() => {
-    if (!cabecalho) return;
-    const y = window.scrollY;
-    cabecalho.classList.toggle('rolado', y > 10);
-    const descendo = y > ultimoY + 4, subindo = y < ultimoY - 4;
-    if (descendo && y > 240 && !document.body.classList.contains('menu-aberto')) cabecalho.classList.add('escondido');
-    if (subindo || y < 240) cabecalho.classList.remove('escondido');
-    if (Math.abs(y - ultimoY) > 4) ultimoY = y;
-  });
+  aoRolar.push(() => { if (cabecalho) cabecalho.classList.toggle('rolado', window.scrollY > 10); });
 
   /* ---------- menu do celular ---------- */
   const botaoMenu = $('[data-abrir-menu]');
@@ -106,9 +97,51 @@
     });
   });
 
+  /* ---------- mapa: pontos acendem em onda a partir dos escritórios ---------- */
+  $$('[data-mapa]').forEach(mapa => {
+    const escritorios = $$('.mapa__marco', mapa).map(m => m.transform.baseVal.consolidate().matrix);
+    $$('.mapa__pontos circle', mapa).forEach(ponto => {
+      const x = ponto.cx.baseVal.value, y = ponto.cy.baseVal.value;
+      const distancia = Math.min(...escritorios.map(e => Math.hypot(x - e.e, y - e.f)));
+      ponto.style.transitionDelay = Math.round(distancia * 1.3) + 'ms';
+    });
+
+    /* lanterna: um círculo de luz segue o mouse; perto de um escritório fica bege e maior */
+    const svg = $('svg', mapa), foco = $('.mapa__luz-foco', mapa);
+    if (!foco) return;
+    const RAIO = 170, RAIO_ESCRITORIO = 250, PERTO = 70;   // unidades do viewBox
+    const atual = { x: 0, y: 0, r: 0 }, alvo = { x: 0, y: 0, r: 0 };
+    let rodando = false;
+    const animar = () => {
+      const k = reduzir ? 1 : 0.18;
+      for (const c of ['x', 'y', 'r']) atual[c] += (alvo[c] - atual[c]) * k;
+      foco.setAttribute('cx', atual.x.toFixed(1));
+      foco.setAttribute('cy', atual.y.toFixed(1));
+      foco.setAttribute('r', Math.max(0, atual.r).toFixed(1));
+      rodando = Math.abs(alvo.x - atual.x) + Math.abs(alvo.y - atual.y) + Math.abs(alvo.r - atual.r) > 0.5;
+      if (rodando) requestAnimationFrame(animar);
+    };
+    const iluminar = () => { if (!rodando) { rodando = true; requestAnimationFrame(animar); } };
+    mapa.addEventListener('pointermove', e => {
+      if (e.pointerType !== 'mouse') return;
+      const p = new DOMPoint(e.clientX, e.clientY).matrixTransform(svg.getScreenCTM().inverse());
+      const perto = escritorios.some(m => Math.hypot(p.x - m.e, p.y - m.f) < PERTO);
+      if (!mapa.classList.contains('mapa--lanterna')) Object.assign(atual, { x: p.x, y: p.y });
+      mapa.classList.add('mapa--lanterna');
+      mapa.classList.toggle('mapa--dourado', perto);
+      Object.assign(alvo, { x: p.x, y: p.y, r: perto ? RAIO_ESCRITORIO : RAIO });
+      iluminar();
+    });
+    mapa.addEventListener('pointerleave', () => {
+      mapa.classList.remove('mapa--lanterna', 'mapa--dourado');
+      alvo.r = 0;
+      iluminar();
+    });
+  });
+
   /* ---------- revelar ao entrar na tela ---------- */
   $$('[data-sequencia]').forEach(lista => [...lista.children].forEach((filho, i) => filho.style.setProperty('--i', i)));
-  const alvos = $$('[data-revelar], [data-sequencia], [data-palavras], .mascara:not(.mascara--entrada), [data-zoom], [data-mapa]');
+  const alvos = $$('[data-revelar], [data-sequencia], [data-palavras], .mascara:not(.mascara--entrada), [data-zoom], [data-mapa], [data-coord]');
   if (reduzir || !('IntersectionObserver' in window)) {
     alvos.forEach(el => el.classList.add('visivel'));
   } else {
@@ -141,21 +174,49 @@
     });
   }
 
-  /* ---------- soluções: abre no hover (desktop) ou toque (celular); uma por vez ---------- */
+  /* ---------- soluções: o hover abre como "prévia"; o clique fixa ----------
+     - passar o mouse abre a linha (uma por vez);
+     - clicar fixa a linha: ao tirar o mouse da lista, ela volta a ficar aberta;
+     - clicar de novo na linha fixada solta (e ela fecha);
+     - no celular (sem hover), o toque abre e fecha. */
   $$('[data-acordeao]').forEach(acordeao => {
     const itens = $$('[data-item]', acordeao);
+    const temHover = () => mouseFino.matches && !celular.matches;
+    let fixado = itens.find(i => i.classList.contains('aberto')) || null;  // a que vem aberta no Figma começa fixada
+    let clicou = false;                                                       // o anel de "fixado" só aparece depois de um clique
     const abrir = (item) => itens.forEach(i => {
       const aberto = i === item;
       i.classList.toggle('aberto', aberto);
+      i.classList.toggle('fixado', clicou && aberto && i === fixado);
       $('.item-solucao__cabeca', i).setAttribute('aria-expanded', String(aberto));
     });
+    abrir(fixado);
+    // Abrir uma linha muda a altura da lista e "move" as linhas debaixo do mouse parado.
+    // Para não entrar em loop, só reage a movimento real do mouse e espera a animação
+    // (450ms) terminar antes de trocar de novo.
+    let ultimoX = null, ultimoY = null, travadoAte = 0;
+    acordeao.addEventListener('mousemove', e => {
+      if (!temHover()) return;
+      if (e.clientX === ultimoX && e.clientY === ultimoY) return;   // evento falso gerado pela mudança de layout
+      ultimoX = e.clientX; ultimoY = e.clientY;
+      const item = e.target.closest('[data-item]');
+      if (!item || item.classList.contains('aberto') || performance.now() < travadoAte) return;
+      abrir(item);
+      travadoAte = performance.now() + 500;
+    });
     itens.forEach(item => {
-      if (item.classList.contains('aberto')) $('.item-solucao__cabeca', item).setAttribute('aria-expanded', 'true');
-      item.addEventListener('mouseenter', () => { if (mouseFino.matches && !celular.matches) abrir(item); });
       item.addEventListener('click', e => {
         if (e.target.closest('a')) return;
-        abrir(item.classList.contains('aberto') && celular.matches ? null : item);
+        clicou = true;
+        fixado = fixado === item ? null : item;
+        abrir(fixado);
       });
+    });
+    acordeao.addEventListener('mouseleave', e => {
+      if (!temHover() || !fixado) return;
+      if (e.clientX === ultimoX && e.clientY === ultimoY) return;   // a lista encolheu sob o mouse parado: não conta como saída
+      abrir(fixado);
+      travadoAte = performance.now() + 500;
     });
   });
 
@@ -209,26 +270,23 @@
     area.addEventListener('pointerleave', () => { botao.style.transform = ''; });
   });
 
-  /* ---------- diagrama em órbita (Estrutura): os cartões giram devagar ---------- */
-  $$('[data-orbita]').forEach(orbita => {
-    const cartoes = $$('.orbita__cartao', orbita);
-    const angulos = cartoes.map(c => +c.dataset.angulo * Math.PI / 180);
-    const volta = 90; // segundos por volta completa
+  /* ---------- diagrama de coordenação (Estrutura): as pills giram bem devagar, no sentido horário, em volta do logo ---------- */
+  $$('[data-coord]').forEach(coord => {
+    const pills = $$('.coord__area', coord), tablet = window.matchMedia('(max-width: 1100px)');
+    const angulos = pills.map(p => +p.dataset.angulo * Math.PI / 180);
+    pills.forEach((p, i) => p.style.setProperty('--i', i));
+    const volta = 160; // segundos por volta completa
     let giro = 0, anterior = performance.now(), visivel = false;
     const posicionar = () => {
-      const w = orbita.clientWidth, h = orbita.clientHeight;
-      const m = celular.matches;
-      const cx = w * 0.5, cy = h * (m ? 0.442 : 0.5);
-      const rx = w * (m ? 0.33 : 0.39), ry = h * (m ? 0.41 : 0.28);
-      cartoes.forEach((c, i) => {
-        const a = angulos[i] + giro;
-        const frente = (Math.sin(a) + 1) / 2;               // 0 = atrás, 1 = na frente
-        const x = cx + Math.cos(a) * rx, y = cy + Math.sin(a) * ry;
-        const escala = 0.73 + 0.27 * frente;
-        c.style.transform = `translate(${x - c.offsetWidth / 2}px, ${y - c.offsetHeight / 2}px) scale(${escala})`;
-        c.style.opacity = (0.75 + 0.25 * frente).toFixed(3);
-        c.style.zIndex = Math.sin(a) > -0.2 ? 20 : 5;
-        c.style.setProperty('--sombra', (0.03 + 0.11 * frente).toFixed(3));
+      const w = coord.clientWidth, h = coord.clientHeight;
+      // raios da volta testados para as pills não se encostarem em nenhum ponto do giro
+      const [fx, fy] = celular.matches ? [0.33, 0.40] : tablet.matches ? [0.32, 0.38] : [0.31, 0.36];
+      const maiorL = Math.max(...pills.map(p => p.offsetWidth)), maiorA = Math.max(...pills.map(p => p.offsetHeight));
+      const rx = Math.min(w * fx, (w - maiorL) / 2 - 2), ry = Math.min(h * fy, (h - maiorA) / 2 - 2);   // nunca sai da área
+      pills.forEach((p, i) => {
+        const a = angulos[i] + giro;   // ângulo crescendo = sentido horário na tela
+        const x = w / 2 + Math.cos(a) * rx, y = h / 2 + Math.sin(a) * ry;
+        p.style.transform = `translate(${(x - p.offsetWidth / 2).toFixed(1)}px, ${(y - p.offsetHeight / 2).toFixed(1)}px)`;
       });
     };
     const laco = (agora) => {
@@ -238,12 +296,12 @@
       if (visivel) requestAnimationFrame(laco);
     };
     posicionar();
-    new ResizeObserver(posicionar).observe(orbita);
+    new ResizeObserver(posicionar).observe(coord);
     if (reduzir) return;
     new IntersectionObserver(([e]) => {
       const estava = visivel; visivel = e.isIntersecting;
       if (visivel && !estava) { anterior = performance.now(); requestAnimationFrame(laco); }
-    }).observe(orbita);
+    }).observe(coord);
   });
 
   /* ---------- blog: filtro por categoria e "carregar mais" ---------- */

@@ -99,6 +99,8 @@ address { font-style: normal; }
 .botao { display: inline-flex; align-items: center; justify-content: center; padding: 16px 28px; border-radius: 999px; font: 500 15px/1 var(--fonte-texto); white-space: nowrap; transition: background-color .3s, color .3s, box-shadow .3s, transform .3s var(--curva); }
 .botao--primario { background: var(--bege); color: var(--marinho); }
 .botao--primario:hover { background: var(--bege-claro); }
+/* em fundo claro o bege-claro some: lá o hover vira azul */
+:is(.secao--papel, .secao--papel-escuro, .capa, .artigo) .botao--primario:hover { background: var(--azul); color: var(--branco); }
 .botao--secundario { color: var(--bege); box-shadow: inset 0 0 0 1px var(--bege); }
 .botao--secundario:hover { background: var(--bege); color: var(--marinho); }
 .botao--contorno-claro { color: var(--marinho); box-shadow: inset 0 0 0 1px var(--borda-claro); }
@@ -123,11 +125,22 @@ address { font-style: normal; }
 .cabecalho__menu { display: none; align-items: center; gap: 10px; font: 500 15px/1 var(--fonte-texto); color: var(--branco); }
 
 /* ao rolar: sólido, com desfoque, mais baixo */
-.cabecalho.rolado { background: rgba(19, 25, 37, .82); -webkit-backdrop-filter: blur(14px) saturate(1.2); backdrop-filter: blur(14px) saturate(1.2); }
-.cabecalho.rolado .cabecalho__barra { padding-block: 16px; }
+/* ao rolar: vira uma barra flutuante de vidro ("glass"), como os cartões da marca */
+.cabecalho { padding: 0; transition: padding .5s var(--curva); }
+.cabecalho__barra { border: 1px solid transparent; border-bottom-color: var(--borda-escuro); border-radius: 0; transition: padding .5s var(--curva), border-radius .5s var(--curva), border-color .5s, background-color .5s, box-shadow .5s; }
+.cabecalho.rolado { padding: 12px calc(max(var(--margem), (100% - var(--largura)) / 2) - 24px) 0; }
+.cabecalho.rolado .cabecalho__barra {
+  padding: 12px 12px 12px 24px;
+  border-color: rgba(255, 255, 255, .10);
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(38, 46, 64, .80) 0%, rgba(19, 25, 37, .76) 100%);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  backdrop-filter: blur(18px) saturate(1.4);
+  box-shadow: 0 12px 32px rgba(5, 8, 15, .28), inset 0 1px 0 rgba(255, 255, 255, .06);
+}
 .cabecalho.rolado .cabecalho__logo img { width: 100px; height: 36px; }
-.cabecalho.escondido { transform: translateY(-100%); }
-.menu-aberto .cabecalho { transform: none; background: var(--marinho); }
+.cabecalho.rolado .cabecalho__nav a:not([aria-current]):not(:hover) { color: rgba(255, 255, 255, .7); }
+.menu-aberto .cabecalho { transform: none; }
 
 @media (max-width: 1180px) {
   .cabecalho__nav, .cabecalho__acoes { display: none; }
@@ -136,7 +149,8 @@ address { font-style: normal; }
 @media (max-width: 860px) {
   .cabecalho__barra { padding: 18px 20px; }
   .cabecalho__logo img, .cabecalho--home .cabecalho__logo img, .cabecalho.rolado .cabecalho__logo img { width: 88.9px; height: 32px; }
-  .cabecalho.rolado .cabecalho__barra { padding-block: 14px; }
+  .cabecalho.rolado { padding: 10px 10px 0; }
+  .cabecalho.rolado .cabecalho__barra { padding: 10px 14px; border-radius: 14px; }
 }
 
 /* menu do celular (provisório: não desenhado no Figma) */
@@ -302,15 +316,31 @@ address { font-style: normal; }
 }
 
 /* ---------- 12. Mapa (Estrutura) ---------- */
-.mapa { position: relative; width: 100%; aspect-ratio: 1200 / 780; }
-.mapa__imagem { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
-.js .mapa__imagem { clip-path: circle(0% at 16.4% 26.2%); transition: clip-path 2.4s var(--curva-suave); }
-.js .mapa.visivel .mapa__imagem { clip-path: circle(150% at 16.4% 26.2%); }
-.mapa__pulso { position: absolute; width: 4.6%; aspect-ratio: 1; border-radius: 4px; transform: translate(-50%, -50%); box-shadow: 0 0 0 0 rgba(220, 201, 177, .45); pointer-events: none; }
-.mapa.visivel .mapa__pulso { animation: pulsar 3.2s ease-out 1.6s infinite; }
-.mapa__pulso--miami { left: 16.45%; top: 26.2%; }
-.mapa__pulso--brasil { left: 26.3%; top: 58.9%; animation-delay: 2.4s !important; }
-@keyframes pulsar { 0% { box-shadow: 0 0 0 0 rgba(220, 201, 177, .45); } 70%, 100% { box-shadow: 0 0 0 22px rgba(220, 201, 177, 0); } }
+/* tudo em SVG (src/partes/mapa.html), em unidades do viewBox 1600 × 1041; pontos em src/partes/mapa-pontos.html */
+.mapa { position: relative; width: 100%; aspect-ratio: 1600 / 1041; }
+.mapa__desenho { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }  /* o arco maior encosta na borda de baixo */
+.mapa__base { fill: var(--azul); fill-opacity: .45; transition: fill-opacity .5s var(--curva); }
+.mapa__arco { stroke-width: 2.5; }
+/* lanterna: com o mouse em cima, o mapa apaga e acende só em volta do cursor; perto de um escritório a luz fica bege e maior */
+.mapa__luz { fill: #8fa3dc; opacity: 0; pointer-events: none; transition: opacity .5s var(--curva), fill .4s; }
+.mapa--lanterna .mapa__base { fill-opacity: .14; }
+.mapa--lanterna .mapa__luz { opacity: 1; }
+.mapa--dourado .mapa__luz { fill: var(--bege); }
+.mapa__pulso { fill: rgba(220, 201, 177, .45); opacity: 0; transform-box: fill-box; transform-origin: center; }
+.mapa.visivel .mapa__pulso { animation: mapa-pulsar 3.2s ease-out 2.2s infinite; }
+.mapa__marco--brasil .mapa__pulso { animation-delay: 3s !important; }
+@keyframes mapa-pulsar { 0% { opacity: 1; transform: none; } 70%, 100% { opacity: 0; transform: scale(1.8); } }
+/* entrada: os pontos acendem em onda a partir dos escritórios (atraso de cada um vem do principal.js), depois os arcos se desenham */
+.js .mapa__pontos circle { opacity: 0; transition: opacity .7s var(--curva); }
+.js .mapa.visivel .mapa__pontos circle { opacity: 1; }
+.js .mapa__marco use { opacity: 0; transition: opacity .6s var(--curva) .1s; }
+.js .mapa__marco--brasil use { transition-delay: .4s; }
+.js .mapa.visivel .mapa__marco use { opacity: 1; }
+.js .mapa__arco { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 2.4s var(--curva-suave) .5s; }
+.js .mapa__arco:nth-child(2) { transition-delay: .7s; }
+.js .mapa__arco:nth-child(3) { transition-delay: .9s; }
+.js .mapa__arco:nth-child(4) { transition-delay: 1.1s; }
+.js .mapa.visivel .mapa__arco { stroke-dashoffset: 0; }
 .mapa__local { position: absolute; display: flex; flex-direction: column; gap: 2px; padding: 10px 16px; border-radius: 4px; background: var(--marinho-elevado); border: 1px solid var(--borda-escuro); white-space: nowrap; }
 .mapa__local--miami { left: 20%; top: 19.23%; }
 .mapa__local--brasil { left: 29.67%; top: 60.26%; }
@@ -322,9 +352,8 @@ address { font-style: normal; }
 
 @media (max-width: 860px) {
   .mapa { aspect-ratio: auto; height: 228px; }
-  .mapa__local, .mapa__pulso { display: none; }
-  .js .mapa__imagem { clip-path: circle(0% at 22% 28%); }
-  .js .mapa.visivel .mapa__imagem { clip-path: circle(150% at 22% 28%); }
+  .mapa__local, .mapa__pulso, .mapa__luz { display: none; }
+  .mapa__arco { stroke-width: 6; }
 }
 
 /* ---------- 13. Soluções (acordeão da Home) ---------- */
@@ -351,6 +380,7 @@ address { font-style: normal; }
 .item-solucao.aberto .item-solucao__circulo { background: var(--bege); box-shadow: none; }
 .item-solucao.aberto .item-solucao__mais { opacity: 0; transform: rotate(90deg); }
 .item-solucao.aberto .item-solucao__seta { opacity: 1; transform: none; }
+.item-solucao.fixado .item-solucao__circulo { box-shadow: 0 0 0 5px rgba(220, 201, 177, .22); }
 
 @media (max-width: 860px) {
   .solucoes-resumo { padding-top: 88px; }
@@ -425,7 +455,6 @@ address { font-style: normal; }
 .chamada__fundo { position: absolute; inset: 0; z-index: -1; background: url("/assets/img/hero-onda.jpg") center / cover no-repeat; opacity: .35; }
 .chamada__titulo { white-space: nowrap; }
 .chamada__titulo .linha { padding-inline: .05em; }
-.chamada__texto { font-size: 18px; line-height: 1.6; color: var(--lilas); }
 .chamada__botoes { display: flex; gap: 16px; }
 .chamada__botoes .botao { transition: background-color .3s, color .3s, box-shadow .3s, transform .5s var(--curva); }
 @media (max-width: 860px) {
@@ -433,7 +462,6 @@ address { font-style: normal; }
   .chamada .rotulo::before { width: 20px; }
   .chamada__titulo { white-space: normal; }
   .chamada__titulo .linha { padding-inline: 0; }
-  .chamada__texto { font-size: 16px; }
   .chamada__botoes { flex-direction: column; gap: 28px; width: 100%; }
 }
 
@@ -508,15 +536,28 @@ address { font-style: normal; }
 .mfo__textos p:last-child { color: var(--cinza); }
 .mfo .titulo-texto__titulo { flex-basis: 620px; }
 
-/* diagrama em órbita */
-.orbita { position: relative; width: 100%; max-width: 1200px; aspect-ratio: 1200 / 500; --planeta: 22%; }
-.orbita__brilho { position: absolute; left: 50%; top: 50%; width: 32%; aspect-ratio: 1; transform: translate(-50%, -50%); }
-.orbita__planeta { position: absolute; left: 50%; top: 50%; width: var(--planeta); aspect-ratio: 1; transform: translate(-50%, -50%); z-index: 10; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; border-radius: 50%; box-shadow: 0 30px 60px rgba(19, 25, 37, .18); }
-.orbita__planeta > img:first-child { position: absolute; inset: 0; width: 100%; height: 100%; }
-.orbita__simbolo { position: relative; width: 22.7%; height: auto; }
-.orbita__nome { position: relative; font: 500 12px/1 var(--fonte-texto); letter-spacing: .14em; text-transform: uppercase; color: var(--bege); }
-.orbita__cartao { position: absolute; left: 0; top: 0; display: flex; align-items: center; gap: 10px; padding: 14px 22px; background: var(--branco); border: 1px solid var(--borda-claro); font: 600 16px/1.6 var(--fonte-texto); color: var(--marinho); white-space: nowrap; will-change: transform, opacity; box-shadow: 0 10px 28px rgba(19, 25, 37, var(--sombra, .14)); }
-.orbita__cartao::before { content: ""; flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--azul); }
+/* diagrama de coordenação: o logo no centro e as frentes em pills claras girando devagar em volta (posição pelo JS) */
+.coord { position: relative; width: 100%; max-width: 1200px; aspect-ratio: 1200 / 540; margin: 32px auto 0; }
+.coord__logo { position: absolute; left: 50%; top: 50%; z-index: 2; width: 15%; max-width: 180px; height: auto; transform: translate(-50%, -50%); }
+.coord__areas { position: absolute; inset: 0; }
+.coord__area {
+  position: absolute; left: 0; top: 0; display: flex; align-items: baseline; gap: 10px; padding: 14px 24px; white-space: nowrap; cursor: default;
+  border-radius: 999px; background: var(--papel); box-shadow: inset 0 0 0 1px var(--borda-papel);
+  will-change: transform; transition: scale .5s var(--curva), background-color .5s, box-shadow .5s;
+}
+.coord__area:hover { scale: 1.05; background: var(--branco); box-shadow: inset 0 0 0 1px var(--borda-claro); }
+.coord__num { font: 500 12px/1 var(--fonte-texto); letter-spacing: .14em; color: var(--azul); }
+.coord__nome { font: 300 clamp(17px, 1.5vw, 21px)/1.2 var(--fonte-titulo); color: var(--marinho); }
+
+/* entrada: o logo e as pills aparecem em sequência */
+.js .coord__logo { opacity: 0; transition: opacity 1.2s var(--curva); }
+.js .coord__area { opacity: 0; translate: 0 10px; transition: opacity .8s var(--curva) calc(.4s + var(--i) * .12s), translate .8s var(--curva) calc(.4s + var(--i) * .12s), scale .5s var(--curva), background-color .5s, box-shadow .5s; }
+.js .coord.visivel :is(.coord__logo, .coord__area) { opacity: 1; translate: none; }
+@media (max-width: 1100px) {
+  .coord { aspect-ratio: 1200 / 640; }
+  .coord__area { padding: 12px 20px; }
+  .coord__nome { font-size: clamp(15px, 1.5vw, 21px); }
+}
 
 @media (max-width: 860px) {
   .com-recuo { flex-direction: column; gap: 40px; }
@@ -528,19 +569,22 @@ address { font-style: normal; }
   .definicao .botao, .solucoes-pagina .botao { width: 100%; }
   .mfo { gap: 32px; }
   .mfo__textos { gap: 32px; }
-  .orbita { aspect-ratio: 350 / 285; --planeta: 33.1%; }
-  .orbita__brilho { width: 50.3%; top: 44.2%; }
-  .orbita__planeta { top: 44.2%; gap: 0; }
-  .orbita__simbolo { width: 27.6%; }
-  .orbita__nome { display: none; }
-  .orbita__cartao { gap: 8px; padding: 10px 14px; font-size: 13px; line-height: 1.3; white-space: normal; width: 128px; }
-  .orbita__cartao::before { width: 6px; height: 6px; }
+  .coord { aspect-ratio: 350 / 480; margin-top: 0; }
+  .coord__logo { width: 25%; }
+  /* pills estreitas (o número vai junto do texto) para as 5 caberem na volta sem se encostar */
+  .coord__area { display: block; max-width: 35%; padding: 9px 12px; border-radius: 20px; white-space: normal; text-align: center; line-height: 1.2; }
+  .coord__num { margin-right: 6px; font-size: 10px; }
+  .coord__nome { font-size: 13px; line-height: 1.15; }
+  .coord__area:hover { scale: none; }
 }
 
 .cards-atuacao { display: flex; gap: 32px; width: 100%; }
-.card-atuacao { flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 28px; padding: 56px; background: var(--branco); }
-.card-atuacao__numero { font: italic 300 24px/1.25 var(--fonte-titulo); color: var(--azul); }
-.card-atuacao > p:not([class]) { color: var(--cinza); }
+/* cartões no marinho da marca: texto branco, itálico e número em bege (como nas seções escuras) */
+.card-atuacao { flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 28px; padding: 56px; background: var(--marinho); color: var(--branco); }
+.card-atuacao__numero { font: italic 300 24px/1.25 var(--fonte-titulo); color: var(--bege); }
+.card-atuacao em { color: var(--bege); }
+.card-atuacao > p:not([class]) { color: rgba(255, 255, 255, .72); }
+.card-atuacao .chips li { box-shadow: inset 0 0 0 1px var(--borda-escuro); color: var(--branco); }
 @media (max-width: 860px) {
   .atuacao { gap: 24px; }
   .cards-atuacao { flex-direction: column; gap: 24px; }
@@ -711,7 +755,8 @@ address { font-style: normal; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-delay: 0s !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; transition-delay: 0s !important; }
   .js .grade span, .js .mascara .linha > span, .js .surgir, .js [data-revelar], .js [data-sequencia] > *, .js [data-palavras] .palavra { transform: none !important; opacity: 1 !important; }
-  .js .mapa__imagem { clip-path: none !important; }
+  .js .mapa__pontos circle, .js .mapa__marco use { opacity: 1 !important; }
+  .js .mapa__arco { stroke-dashoffset: 0 !important; }
   .js .mapa__local { opacity: 1 !important; transform: none !important; }
   .sobre__foto img { transform: none !important; }
 }

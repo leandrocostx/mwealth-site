@@ -21,6 +21,7 @@ npm run build    # só monta a pasta dist/
 | Cores, fontes, espaçamentos, celular | `css/estilo.css` (tokens no topo, celular até 860px) |
 | Animações e interações | `js/principal.js` |
 | Onda do hero (WebGL) | `js/onda.js` (valores aprovados: velocidade 92, intensidade 65, parallax 30%) |
+| Mapa-múndi (SVG) | `src/partes/mapa.html` (arcos, marcadores, etiquetas) e `src/partes/mapa-pontos.html` (um `<circle>` por ponto) |
 | Imagens, logos, ícones | `assets/` |
 
 Nas páginas, `<!-- @parte nome chave="valor" -->` insere `src/partes/nome.html` trocando `{{chave}}` pelo valor.
