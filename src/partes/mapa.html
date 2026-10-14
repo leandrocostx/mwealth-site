@@ -1,5 +1,6 @@
-<div class="mapa" data-mapa>
-        <svg class="mapa__desenho" viewBox="0 0 1600 1041" role="img" aria-label="Mapa-múndi com os escritórios da M Wealth no Brasil e em Miami, ligados por arcos">
+<!-- viewbox: "0 0 1600 1041" = mundo inteiro (Home); recorte das Américas na Estrutura (classe mapa--recorte) -->
+      <div class="mapa {{classe}}" data-mapa>
+        <svg class="mapa__desenho" viewBox="{{viewbox}}" role="img" aria-label="Mapa-múndi com os escritórios da M Wealth no Brasil e em Miami, ligados por arcos">
           <defs>
             <linearGradient id="mapa-arco-forte"><stop offset="0" stop-color="#dcc9b1" stop-opacity=".35"/><stop offset="1" stop-color="#dcc9b1" stop-opacity=".9"/></linearGradient>
             <linearGradient id="mapa-arco-suave"><stop offset="0" stop-color="#dcc9b1" stop-opacity=".18"/><stop offset="1" stop-color="#dcc9b1" stop-opacity=".5"/></linearGradient>
@@ -28,11 +29,11 @@
           </g>
         </svg>
         <div class="mapa__local mapa__local--miami">
-          <p class="mapa__cidade">Miami</p>
-          <p class="mapa__detalhe">Estrutura internacional</p>
+          <p class="mapa__cidade">Estrutura internacional</p>
+          <p class="mapa__detalhe">Miami</p>
         </div>
         <div class="mapa__local mapa__local--brasil">
-          <p class="mapa__cidade">Brasil</p>
-          <p class="mapa__detalhe">Brasília · Uberlândia</p>
+          <p class="mapa__cidade">Estrutura nacional</p>
+          <p class="mapa__detalhe">Brasília e Uberlândia</p>
         </div>
       </div>

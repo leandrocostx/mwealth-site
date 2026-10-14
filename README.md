@@ -22,7 +22,13 @@ npm run build    # só monta a pasta dist/
 | Animações e interações | `js/principal.js` |
 | Onda do hero (WebGL) | `js/onda.js` (valores aprovados: velocidade 92, intensidade 65, parallax 30%) |
 | Mapa-múndi (SVG) | `src/partes/mapa.html` (arcos, marcadores, etiquetas) e `src/partes/mapa-pontos.html` (um `<circle>` por ponto) |
+| Subpáginas de cada solução | `src/paginas/solucoes/` (uma por solução; cartões das outras no fim, via `src/partes/card-solucao.html`) |
 | Imagens, logos, ícones | `assets/` |
+
+O mapa recebe o enquadramento: `<!-- @parte mapa viewbox="0 0 1600 1041" classe="" -->` (mundo inteiro, Home) ou
+`viewbox="40 120 840 660" classe="mapa--recorte"` (Américas, Estrutura).
+
+Teste dos títulos da jornada do cliente em dourado: abrir a Home com `?dourado` no fim do endereço.
 
 Nas páginas, `<!-- @parte nome chave="valor" -->` insere `src/partes/nome.html` trocando `{{chave}}` pelo valor.
 Isso vira `get_template_part()` no tema WordPress.

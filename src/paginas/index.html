@@ -19,13 +19,10 @@
         <canvas class="onda__canvas"></canvas>
       </div>
       <div class="hero__degrade" aria-hidden="true"></div>
-      <div class="grade" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
 
       <div class="hero__conteudo">
         <p class="sobretitulo surgir">
           <span>Multi Family Office independente</span>
-          <i class="so-desktop" aria-hidden="true"></i>
-          <span class="sobretitulo__ano so-desktop">Desde 2017</span>
         </p>
         <h1 class="hero__titulo t-display mascara mascara--entrada">
           <span class="linha"><span>Você é <em>único</em>.</span></span>
@@ -43,18 +40,10 @@
     </section>
 
     <!-- ECOSSISTEMA -->
+    <!-- sem logos de instituições: a M Wealth não quer se vincular a nenhuma (reunião 14/10) -->
     <section class="ecossistema" aria-labelledby="ecossistema-titulo">
-      <div class="ecossistema__texto">
-        <p class="rotulo rotulo--escuro" id="ecossistema-titulo">Nosso ecossistema</p>
-        <p>Através de um único ponto de contato, nossos clientes acessam os investimentos das principais instituições financeiras do mercado nacional e internacional.</p>
-      </div>
-      <ul class="ecossistema__logos" data-sequencia>
-        <li class="ecossistema__logo ecossistema__logo--xp"><img src="/assets/logos/xp.webp" alt="XP Investimentos" width="51" height="46" loading="lazy"></li>
-        <li class="ecossistema__logo ecossistema__logo--btg"><img src="/assets/logos/btg.webp" alt="BTG Pactual" width="54" height="48" loading="lazy"></li>
-        <li class="ecossistema__logo ecossistema__logo--schwab"><img src="/assets/logos/charles-schwab.webp" alt="Charles Schwab" width="46" height="46" loading="lazy"></li>
-        <li class="ecossistema__logo ecossistema__logo--agora"><img src="/assets/logos/agora.webp" alt="Ágora — uma empresa Bradesco" width="118" height="40" loading="lazy"></li>
-        <li class="ecossistema__logo ecossistema__logo--jpm"><img src="/assets/logos/jp-morgan.webp" alt="J.P. Morgan Private Bank" width="120" height="42" loading="lazy"></li>
-      </ul>
+      <p class="rotulo rotulo--escuro" id="ecossistema-titulo" data-revelar>Nosso ecossistema</p>
+      <p class="ecossistema__frase t-titulo3" data-revelar>Através de um único ponto de contato, nossos clientes acessam os investimentos das principais instituições financeiras do mercado nacional e internacional.</p>
     </section>
 
     <!-- 01 SOBRE NÓS -->
@@ -64,7 +53,7 @@
           <p class="rotulo">01 — Sobre nós</p>
         </div>
         <h2 class="sobre__frase t-titulo1" id="sobre-titulo" data-manifesto>
-          Acreditamos que cada cliente é <em>único</em>. <span class="suave">Por isso, desde 2017, desenvolvemos uma metodologia de atendimento que prioriza os interesses de cada <span class="so-desktop-inline">um dos nossos clientes.</span><span class="so-celular-inline">um.</span></span>
+          Acreditamos que cada cliente é <em>único</em>. <span class="suave">Por isso, desenvolvemos uma metodologia de atendimento que prioriza os interesses de cada <span class="so-desktop-inline">um dos nossos clientes.</span><span class="so-celular-inline">um.</span></span>
         </h2>
       </div>
       <div class="sobre__foto-numeros">
@@ -75,8 +64,12 @@
           <p class="t-grande sobre__texto">Nossos clientes contam com um trabalho individualizado, apoiado por um grupo de especialistas capazes de planejar e executar estratégias para todas as esferas do seu patrimônio.</p>
           <div class="numeros">
             <div class="numero">
-              <p class="numero__valor t-titulo1" data-contar="2017" data-contar-de="1990">2017</p>
-              <p class="numero__legenda">Ano de fundação</p>
+              <p class="numero__valor t-titulo1">CVM</p>
+              <p class="numero__legenda">Registro de consultoria de valores mobiliários no Brasil</p>
+            </div>
+            <div class="numero">
+              <p class="numero__valor t-titulo1">RIA</p>
+              <p class="numero__legenda">Registered Investment Advisor nos Estados Unidos</p>
             </div>
             <div class="numero">
               <p class="numero__valor t-titulo1" data-contar="3">3</p>
@@ -84,10 +77,9 @@
             </div>
             <div class="numero">
               <p class="numero__valor t-titulo1" data-contar="100" data-contar-sufixo="%">100%</p>
-              <p class="numero__legenda">Independente: remunerados apenas pelos clientes</p>
+              <p class="numero__legenda">Independente: sem vínculo com instituições financeiras</p>
             </div>
           </div>
-          <a class="link" href="/equipe">Conheça nosso time<span class="link__seta">→</span></a>
         </div>
       </div>
     </section>
@@ -102,56 +94,61 @@
           <a class="link link--bege so-desktop" href="/estrutura">Conheça nossa estrutura<span class="link__seta">→</span></a>
         </div>
       </div>
-      <!-- @parte mapa -->
+      <!-- @parte mapa viewbox="0 0 1600 1041" classe="" -->
       <ul class="chips chips--escuro so-celular">
         <li>Brasília</li><li>Uberlândia</li><li>Miami</li>
       </ul>
       <a class="link link--bege so-celular" href="/estrutura">Conheça nossa estrutura<span class="link__seta">→</span></a>
     </section>
 
-    <!-- 03 SOLUÇÕES -->
+    <!-- 03 SOLUÇÕES: texto à esquerda e a lista numerada à direita (estrutura da referência da Portofino);
+         a linha continua abrindo no hover/clique, com o mesmo efeito -->
     <section class="secao secao--papel solucoes-resumo" id="solucoes" aria-labelledby="solucoes-titulo">
-      <p class="rotulo" data-revelar>03 — Soluções</p>
-      <div class="titulo-link">
-        <h2 class="t-titulo1" id="solucoes-titulo" data-revelar>Gestão <em>integrada</em> para patrimônios familiares.</h2>
-        <a class="link so-desktop" href="/solucoes">Ver todas as soluções<span class="link__seta">→</span></a>
+      <div class="solucoes-resumo__grade">
+        <div class="solucoes-resumo__intro">
+          <p class="rotulo" data-revelar>03 — Soluções</p>
+          <h2 class="t-titulo1" id="solucoes-titulo" data-revelar>Gestão <em>integrada</em> para patrimônios familiares.</h2>
+          <div class="solucoes-resumo__textos" data-revelar>
+            <p class="t-grande">Um Multi-Family Office independente atua como o centro de coordenação da vida patrimonial de uma família.</p>
+            <p>Nossa função não é apenas selecionar investimentos, mas integrar estruturação, sucessão, tributação e proteção do patrimônio sob uma única visão.</p>
+          </div>
+          <a class="link" href="/solucoes" data-revelar>Ver todas as soluções<span class="link__seta">→</span></a>
+        </div>
+        <div class="acordeao" data-acordeao>
+          <!-- @parte item-solucao numero="01" titulo="Estruturação de Family Office" ancora="estruturacao-de-family-office" descricao="Apoiamos famílias na implementação e organização de estruturas dedicadas à gestão patrimonial" extra=", incluindo a governança familiar" aberto="aberto" -->
+          <!-- @parte item-solucao numero="02" titulo="Gestão Global de Recursos" ancora="gestao-global-de-recursos" descricao="Desenvolvemos portfólios personalizados por meio de uma arquitetura aberta e independente, acessando oportunidades de investimento no Brasil e no exterior" extra="" aberto="" -->
+          <!-- @parte item-solucao numero="03" titulo="Planejamento Sucessório" ancora="planejamento-sucessorio" descricao="Estruturamos soluções que asseguram a transferência ordenada e eficiente do patrimônio entre gerações" extra=", reduzindo riscos e potenciais conflitos familiares" aberto="" -->
+          <!-- @parte item-solucao numero="04" titulo="Planejamento Tributário" ancora="planejamento-tributario" descricao="Analisamos continuamente a estrutura patrimonial dos clientes para identificar oportunidades legítimas de otimização fiscal" extra="" aberto="" -->
+          <!-- @parte item-solucao numero="05" titulo="Gestão de Riscos" ancora="gestao-de-riscos" descricao="Mapeamos vulnerabilidades e implementamos mecanismos de proteção adequados à complexidade de cada patrimônio" extra="" aberto="" -->
+        </div>
       </div>
-      <div class="acordeao" data-acordeao>
-        <!-- @parte item-solucao numero="01" titulo="Gestão Global de Recursos" ancora="gestao-global-de-recursos" descricao="Desenvolvemos portfólios personalizados por meio de uma arquitetura aberta e independente, acessando oportunidades de investimento no Brasil e no exterior" extra="" aberto="" -->
-        <!-- @parte item-solucao numero="02" titulo="Planejamento Sucessório" ancora="planejamento-sucessorio" descricao="Estruturamos soluções que asseguram a transferência ordenada e eficiente do patrimônio entre gerações" extra=", reduzindo riscos e potenciais conflitos familiares" aberto="aberto" -->
-        <!-- @parte item-solucao numero="03" titulo="Planejamento Tributário" ancora="planejamento-tributario" descricao="Analisamos continuamente a estrutura patrimonial dos clientes para identificar oportunidades legítimas de otimização fiscal" extra="" aberto="" -->
-        <!-- @parte item-solucao numero="04" titulo="Riscos e Proteção Patrimonial" ancora="riscos-e-protecao-patrimonial" descricao="Mapeamos vulnerabilidades e implementamos mecanismos de proteção adequados à complexidade de cada patrimônio" extra="" aberto="" -->
-        <!-- @parte item-solucao numero="05" titulo="Governança Familiar" ancora="governanca-familiar" descricao="Auxiliamos famílias na construção de estruturas de governança que promovam alinhamento entre gerações, clareza na tomada de decisões e perpetuidade patrimonial" extra="" aberto="" -->
-        <!-- @parte item-solucao numero="06" titulo="Estruturação de Family Office" ancora="estruturacao-de-family-office" descricao="Apoiamos famílias na implementação e organização de estruturas dedicadas à gestão patrimonial" extra="" aberto="" -->
-      </div>
-      <a class="link so-celular" href="/solucoes">Ver todas as soluções<span class="link__seta">→</span></a>
     </section>
 
     <!-- 04 ABORDAGEM -->
     <section class="abordagem" id="abordagem" aria-labelledby="abordagem-titulo">
       <div class="abordagem__fundo" aria-hidden="true" data-parallax="0.15"></div>
       <p class="rotulo rotulo--escuro" data-revelar>04 — Abordagem</p>
-      <h2 class="abordagem__frase t-display" id="abordagem-titulo" data-palavras>“Somos remunerados <em>unicamente</em> pelos nossos clientes.”</h2>
+      <h2 class="abordagem__frase t-titulo1" id="abordagem-titulo" data-palavras>Nossa abordagem é centralizada no <em>interesse do cliente</em>; por isso, optamos por atuar de forma totalmente independente, mitigando, assim, qualquer conflito de interesse.</h2>
       <div class="pilares" data-sequencia>
         <div class="pilar">
           <h3 class="t-titulo3">Independência</h3>
-          <p>Atuamos de forma totalmente independente, mitigando qualquer conflito de interesse.</p>
+          <p>Mantemos uma relação direta com cada cliente, sem subordinação a nenhuma instituição financeira.</p>
         </div>
         <div class="pilar">
           <h3 class="t-titulo3">Imparcialidade</h3>
-          <p>Temos liberdade para utilizar diferentes plataformas, sempre buscando o melhor para o cliente.</p>
+          <p>Nossas operações buscam o melhor atingimento dos objetivos de cada cliente, sem preferência por instituições, plataformas ou produtos.</p>
         </div>
         <div class="pilar">
           <h3 class="t-titulo3">Transparência</h3>
-          <p>Não recebemos comissão de corretoras ou instituições financeiras. As decisões seguem apenas os seus objetivos.</p>
+          <p>Nosso compromisso é exclusivamente com o cliente: não recebemos comissões de corretoras ou instituições financeiras.</p>
         </div>
       </div>
     </section>
 
     <!-- 05 PROCESSO -->
     <section class="secao secao--papel processo" id="processo" aria-labelledby="processo-titulo">
-      <p class="rotulo" data-revelar>05 — Processo</p>
-      <h2 class="t-titulo1 processo__titulo" id="processo-titulo" data-revelar>Como funciona o <em>processo</em> M Wealth.</h2>
+      <p class="rotulo" data-revelar>05 — Jornada do cliente</p>
+      <h2 class="t-titulo1 processo__titulo" id="processo-titulo" data-revelar>Como funciona a <em>jornada do cliente</em> na M Wealth.</h2>
       <ol class="etapas" data-etapas>
         <li class="etapa">
           <div class="etapa__linha" aria-hidden="true"><i class="etapa__marcador"></i><span class="etapa__traco"><span class="etapa__preenchimento"></span></span></div>
@@ -181,19 +178,13 @@
       <a class="botao botao--primario so-desktop-flex" href="https://wa.me/5534984456366?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20uma%20conversa%20com%20a%20M%20Wealth." target="_blank" rel="noopener">Agende uma conversa</a>
     </section>
 
-    <!-- 06 CONTEÚDOS -->
+    <!-- 06 CONTEÚDOS: sem posts na Home, só o acesso ao M Context -->
     <section class="secao secao--papel-escuro conteudos" id="conteudos" aria-labelledby="conteudos-titulo">
-      <p class="rotulo" data-revelar>06 — Conteúdos</p>
+      <p class="rotulo" data-revelar>06 — M&nbsp;Context</p>
       <div class="titulo-link">
-        <h2 class="t-titulo1" id="conteudos-titulo" data-revelar>Conteúdos para quem pensa no <em>longo prazo</em>.</h2>
-        <a class="link so-desktop" href="/blog">Ver todos os conteúdos<span class="link__seta">→</span></a>
+        <h2 class="t-titulo1" id="conteudos-titulo" data-revelar>Informação é abundante. <em>Contexto</em> faz a diferença.</h2>
+        <a class="botao botao--primario" href="/blog" data-revelar>Acesse o M&nbsp;Context</a>
       </div>
-      <div class="posts posts--3">
-        <!-- @parte card-post url="/blog/filosofia-de-alocacao" imagem="/assets/img/post-placeholder.jpg" alt="Imagem do post (provisória)" categoria="Artigos" data="02 out 2026" titulo="Filosofia de Alocação" resumo="A gestão de patrimônio começa muito antes da escolha de qualquer ativo: começa na escuta atenta de quem é o cliente e do que deseja preservar." -->
-        <!-- @parte card-post url="#" imagem="/assets/img/webinar-internacionalizacao.jpg" alt="Globo noturno com conexões de luz entre continentes" categoria="Destaques" data="29 set 2026" titulo="Webinar: internacionalização como ferramenta de perpetuidade de patrimônios" resumo="Com a 4tax, um encontro sobre patrimônio global, proteção do legado familiar e eficiência tributária. Dia 06/10, às 17h, pelo Zoom." -->
-        <!-- @parte card-post url="#" imagem="/assets/img/post-placeholder.jpg" alt="Imagem do post (provisória)" categoria="Artigos" data="25 set 2026" titulo="Rebalanceamento de carteiras: agir menos, no momento certo" resumo="Simulamos sete anos de mercado para descobrir a faixa de tolerância ideal antes de rebalancear uma carteira no Brasil." extra="so-desktop-flex" -->
-      </div>
-      <a class="link so-celular" href="/blog">Ver todos os conteúdos<span class="link__seta">→</span></a>
     </section>
 
     <!-- @parte chamada-final -->

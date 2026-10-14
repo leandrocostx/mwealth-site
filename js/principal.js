@@ -11,6 +11,9 @@
   const $$ = (sel, raiz = document) => [...raiz.querySelectorAll(sel)];
   const limitar = (v, min = 0, max = 1) => Math.min(max, Math.max(min, v));
 
+  /* teste da reunião de 14/10: títulos das etapas em dourado. Ligar com ?dourado no endereço */
+  if (new URLSearchParams(location.search).has('dourado')) document.documentElement.classList.add('titulos-dourados');
+
   /* ---------- rolagem suave (Lenis) ---------- */
   let lenis = null;
   if (!reduzir && window.Lenis) {
@@ -192,17 +195,33 @@
     });
     abrir(fixado);
     // Abrir uma linha muda a altura da lista e "move" as linhas debaixo do mouse parado.
-    // Para não entrar em loop, só reage a movimento real do mouse e espera a animação
-    // (450ms) terminar antes de trocar de novo.
-    let ultimoX = null, ultimoY = null, travadoAte = 0;
+    // Para não entrar em loop, só reage a movimento real do mouse e espera um instante (TRAVA)
+    // antes de trocar de novo; curto o bastante para o hover responder logo.
+    const TRAVA = 280;
+    let ultimoX = null, ultimoY = null, travadoAte = 0, pendente = null;
+    // Se o mouse passou por várias linhas durante a trava, ao fim dela abre a que está sob o cursor
+    // (uma vez só, sem reagir de novo à mudança de layout).
+    const conferirPendente = () => {
+      pendente = null;
+      if (!acordeao.matches(':hover')) return;
+      const item = document.elementFromPoint(ultimoX, ultimoY)?.closest('[data-item]');
+      if (!item || !acordeao.contains(item) || item.classList.contains('aberto')) return;
+      abrir(item);
+      travadoAte = performance.now() + TRAVA;
+    };
     acordeao.addEventListener('mousemove', e => {
       if (!temHover()) return;
       if (e.clientX === ultimoX && e.clientY === ultimoY) return;   // evento falso gerado pela mudança de layout
       ultimoX = e.clientX; ultimoY = e.clientY;
       const item = e.target.closest('[data-item]');
-      if (!item || item.classList.contains('aberto') || performance.now() < travadoAte) return;
+      if (!item || item.classList.contains('aberto')) return;
+      const agora = performance.now();
+      if (agora < travadoAte) {
+        if (!pendente) pendente = setTimeout(conferirPendente, travadoAte - agora + 20);
+        return;
+      }
       abrir(item);
-      travadoAte = performance.now() + 500;
+      travadoAte = agora + TRAVA;
     });
     itens.forEach(item => {
       item.addEventListener('click', e => {
@@ -216,11 +235,12 @@
       if (!temHover() || !fixado) return;
       if (e.clientX === ultimoX && e.clientY === ultimoY) return;   // a lista encolheu sob o mouse parado: não conta como saída
       abrir(fixado);
-      travadoAte = performance.now() + 500;
+      travadoAte = performance.now() + TRAVA;
     });
   });
 
-  /* ---------- processo: a linha se preenche com a rolagem e acende cada etapa ---------- */
+  /* ---------- jornada do cliente: a linha se preenche com a rolagem e acende cada etapa ----------
+     (mais rápida desde 14/10: as 4 etapas acendem antes do fim da seção) */
   $$('[data-etapas]').forEach(lista => {
     const etapas = $$('.etapa', lista);
     if (reduzir) { etapas.forEach(e => { e.classList.add('acesa'); e.style.setProperty('--p', 1); }); return; }
@@ -229,13 +249,13 @@
       if (celular.matches) {
         etapas.forEach(e => {
           const r = e.getBoundingClientRect();
-          const p = limitar((vh * 0.85 - r.top) / (vh * 0.35));
+          const p = limitar((vh * 0.92 - r.top) / (vh * 0.2));
           e.style.setProperty('--p', p);
           e.classList.toggle('acesa', p > 0);
         });
       } else {
         const r = lista.getBoundingClientRect();
-        const total = limitar((vh * 0.8 - r.top) / (vh * 0.5)) * etapas.length;
+        const total = limitar((vh * 0.95 - r.top) / (vh * 0.28)) * etapas.length;
         etapas.forEach((e, i) => {
           e.style.setProperty('--p', limitar(total - i));
           e.classList.toggle('acesa', total > i);
@@ -270,7 +290,7 @@
     area.addEventListener('pointerleave', () => { botao.style.transform = ''; });
   });
 
-  /* ---------- diagrama de coordenação (Estrutura): as pills giram bem devagar, no sentido horário, em volta do logo ---------- */
+  /* ---------- diagrama de coordenação (Soluções): as pills giram bem devagar, no sentido horário, em volta do centro ---------- */
   $$('[data-coord]').forEach(coord => {
     const pills = $$('.coord__area', coord), tablet = window.matchMedia('(max-width: 1100px)');
     const angulos = pills.map(p => +p.dataset.angulo * Math.PI / 180);
