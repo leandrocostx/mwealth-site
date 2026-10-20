@@ -357,7 +357,7 @@
     b.textContent = aberto ? 'Ler menos' : 'Ler mais';
   }));
 
-  /* ---------- vitrine do portal: abas que trocam a tela, giro automático e paralaxe leve ---------- */
+  /* ---------- vitrine do portal: abas que trocam a tela, giro automático e paralaxe leve no celular ---------- */
   $$('[data-vitrine]').forEach(vitrine => {
     const abas = $$('[data-vitrine-aba]', vitrine);
     const telas = $$('.vitrine__telas .vitrine__tela', vitrine);
@@ -400,7 +400,7 @@
       new IntersectionObserver(([e]) => { naTela = e.isIntersecting; agendar(); }, { threshold: 0.35 }).observe(vitrine);
     }
 
-    // paralaxe: card e celular andam um pouco mais devagar que o navegador
+    // paralaxe: o celular anda um pouco mais devagar que o navegador
     const palco = $('.vitrine__palco', vitrine);
     if (!reduzir && palco) {
       let pedido = false;
@@ -408,7 +408,6 @@
         pedido = false;
         const r = palco.getBoundingClientRect();
         const p = limitar((innerHeight - r.top) / (innerHeight + r.height)) * 2 - 1; // -1 entrando, 1 saindo
-        palco.style.setProperty('--vitrine-card', (p * -28).toFixed(1) + 'px');
         palco.style.setProperty('--vitrine-celular', (p * -48).toFixed(1) + 'px');
       };
       const pedir = () => { if (!pedido) { pedido = true; requestAnimationFrame(mover); } };

@@ -629,7 +629,7 @@ p, li, blockquote { text-wrap: pretty; }
 .previa__barra i { width: 10px; height: 10px; border-radius: 50%; background: rgba(255, 255, 255, .14); }
 .previa__barra span { margin-left: 12px; font-size: 12px; color: var(--lilas); }
 
-/* vitrine: navegador com as telas, card do patrimônio à esquerda e celular à direita (prints reais do portal) */
+/* vitrine: navegador com as telas e celular à direita (prints reais do portal) */
 .vitrine { display: flex; flex-direction: column; align-items: center; gap: 40px; width: 100%; }
 .vitrine figcaption { text-align: center; font: 500 11px/1.6 var(--fonte-texto); letter-spacing: .14em; text-transform: uppercase; color: var(--lilas); }
 .vitrine__abas { display: inline-flex; gap: 4px; padding: 4px; border: 1px solid var(--borda-escuro); border-radius: 999px; background: rgba(255, 255, 255, .03); }
@@ -647,7 +647,6 @@ p, li, blockquote { text-wrap: pretty; }
 .vitrine__telas { position: relative; aspect-ratio: 1440 / 940; background: #000; }
 .vitrine__tela { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transform: scale(1.02); transition: opacity .8s var(--curva-suave), transform 1.4s var(--curva); }
 .vitrine__tela.ativa { opacity: 1; transform: none; }
-.vitrine__card { position: absolute; left: 0; bottom: 0; width: 26%; height: auto; border-radius: 10px; filter: drop-shadow(0 30px 40px rgba(0, 0, 0, .55)); transform: translate3d(0, var(--vitrine-card, 0px), 0); }
 .vitrine__celular { position: absolute; right: 2%; bottom: 0; width: 19%; padding: 7px; border-radius: 38px; background: #05070b; border: 1px solid rgba(255, 255, 255, .18); box-shadow: inset 0 0 0 2px #1a2030, 0 40px 80px rgba(0, 0, 0, .6); transform: translate3d(0, var(--vitrine-celular, 0px), 0); }
 .vitrine__celular img { display: block; width: 100%; height: auto; border-radius: 31px; }
 /* telas do celular empilhadas: a primeira dá a altura, as outras ficam por cima */
@@ -670,7 +669,6 @@ p, li, blockquote { text-wrap: pretty; }
   .vitrine__navegador { border-radius: 10px; }
   .previa__barra { padding: 9px 12px; }
   .previa__barra span { margin-left: 6px; font-size: 11px; }
-  .vitrine__card { display: none; }
   .vitrine__celular { width: 28%; right: 4%; padding: 4px; border-radius: 22px; }
   .vitrine__celular img { border-radius: 18px; }
   .vitrine__celular .vitrine__tela { inset: 4px; width: calc(100% - 8px); height: calc(100% - 8px); }
