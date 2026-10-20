@@ -622,55 +622,59 @@ p, li, blockquote { text-wrap: pretty; }
 .certificacoes sup { font-size: .45em; vertical-align: super; line-height: 0; }
 .certificacoes span { font-size: 14px; line-height: 1.5; color: var(--cinza); }
 
-/* consolidação e portal do cliente */
-.portal__corpo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); align-items: center; gap: 80px; width: 100%; }
-.portal__texto { display: flex; flex-direction: column; align-items: flex-start; gap: 28px; }
-.portal__lista { display: flex; flex-direction: column; gap: 12px; }
-.portal__lista li { display: flex; align-items: baseline; gap: 14px; }
-.portal__lista li::before { content: ""; flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--bege); transform: translateY(-2px); }
-.portal__previa { display: flex; flex-direction: column; gap: 14px; }
-.portal__previa figcaption { font: 500 11px/1 var(--fonte-texto); letter-spacing: .14em; text-transform: uppercase; color: var(--lilas); }
-/* prévia ilustrativa (esqueleto da tela, sem dados) até chegar o print real do portal */
-.previa { overflow: hidden; border-radius: 12px; background: #0e131d; border: 1px solid var(--borda-escuro); box-shadow: 0 40px 80px rgba(0, 0, 0, .35); }
+/* consolidação e portal do cliente: texto em cima, vitrine larga embaixo */
+.portal__cabeca { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: end; gap: 80px; width: 100%; }
+.portal__intro { display: flex; flex-direction: column; align-items: flex-start; gap: 32px; }
 .previa__barra { display: flex; align-items: center; gap: 6px; padding: 12px 16px; border-bottom: 1px solid var(--borda-escuro); }
 .previa__barra i { width: 10px; height: 10px; border-radius: 50%; background: rgba(255, 255, 255, .14); }
 .previa__barra span { margin-left: 12px; font-size: 12px; color: var(--lilas); }
-.previa__tela { display: flex; min-height: 340px; }
-.previa__menu { flex: 0 0 22%; display: flex; flex-direction: column; gap: 14px; padding: 22px 16px; border-right: 1px solid var(--borda-escuro); }
-.previa__menu b { width: 70%; height: 18px; margin-bottom: 8px; border-radius: 4px; background: rgba(93, 115, 175, .6); }
-.previa__menu span { height: 8px; border-radius: 4px; background: rgba(255, 255, 255, .1); }
-.previa__menu span:nth-child(even) { width: 75%; }
-.previa__conteudo { flex: 1; display: flex; flex-direction: column; gap: 18px; padding: 22px; }
-.previa__cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-.previa__cards div { display: flex; flex-direction: column; gap: 10px; padding: 14px; border-radius: 8px; background: rgba(255, 255, 255, .04); border: 1px solid var(--borda-escuro); }
-.previa__cards span { width: 60%; height: 6px; border-radius: 3px; background: rgba(255, 255, 255, .14); }
-.previa__cards b { width: 85%; height: 14px; border-radius: 4px; background: rgba(220, 201, 177, .45); }
-.previa__grafico { height: 150px; padding: 14px; border-radius: 8px; background: rgba(255, 255, 255, .03); border: 1px solid var(--borda-escuro); }
-.previa__grafico svg { width: 100%; height: 100%; }
-.previa__linhas { display: flex; flex-direction: column; gap: 10px; }
-.previa__linhas span { height: 8px; border-radius: 4px; background: rgba(255, 255, 255, .08); }
-.previa__linhas span:nth-child(2) { width: 85%; }
-.previa__linhas span:nth-child(3) { width: 65%; }
+
+/* vitrine: navegador com as telas, card do patrimônio à esquerda e celular à direita (prints reais do portal) */
+.vitrine { display: flex; flex-direction: column; align-items: center; gap: 40px; width: 100%; }
+.vitrine figcaption { text-align: center; font: 500 11px/1.6 var(--fonte-texto); letter-spacing: .14em; text-transform: uppercase; color: var(--lilas); }
+.vitrine__abas { display: inline-flex; gap: 4px; padding: 4px; border: 1px solid var(--borda-escuro); border-radius: 999px; background: rgba(255, 255, 255, .03); }
+.vitrine__aba { position: relative; overflow: hidden; padding: 11px 22px; border-radius: 999px; font: 500 14px/1 var(--fonte-texto); color: var(--lilas); transition: color .3s, background-color .3s; }
+.vitrine__aba:hover { color: var(--branco); }
+.vitrine__aba[aria-selected="true"] { background: var(--bege); color: var(--marinho); }
+/* enquanto gira sozinha, a aba ativa mostra o tempo até a próxima tela */
+.vitrine__aba::after { content: ""; position: absolute; left: 22px; right: 22px; bottom: 5px; height: 1px; background: currentColor; opacity: .35; transform: scaleX(0); transform-origin: left; }
+.vitrine.girando .vitrine__aba[aria-selected="true"]::after { animation: vitrine-tempo var(--vitrine-tempo, 6s) linear forwards; }
+@keyframes vitrine-tempo { to { transform: scaleX(1); } }
+
+.vitrine__palco { position: relative; isolation: isolate; width: 100%; padding: 0 10% 10%; }
+.vitrine__palco::before { content: ""; position: absolute; z-index: -1; inset: 6% 4% 4%; background: radial-gradient(55% 55% at 50% 45%, rgba(93, 115, 175, .38), rgba(93, 115, 175, 0) 70%), radial-gradient(30% 35% at 18% 85%, rgba(220, 201, 177, .12), rgba(220, 201, 177, 0) 70%); filter: blur(30px); pointer-events: none; }
+.vitrine__navegador { overflow: hidden; border-radius: 14px; background: #0e131d; border: 1px solid var(--borda-escuro); box-shadow: 0 50px 100px rgba(0, 0, 0, .45); }
+.vitrine__telas { position: relative; aspect-ratio: 1440 / 940; background: #000; }
+.vitrine__tela { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transform: scale(1.02); transition: opacity .8s var(--curva-suave), transform 1.4s var(--curva); }
+.vitrine__tela.ativa { opacity: 1; transform: none; }
+.vitrine__card { position: absolute; left: 0; bottom: 0; width: 26%; height: auto; border-radius: 10px; filter: drop-shadow(0 30px 40px rgba(0, 0, 0, .55)); transform: translate3d(0, var(--vitrine-card, 0px), 0); }
+.vitrine__celular { position: absolute; right: 2%; bottom: 0; width: 19%; padding: 7px; border-radius: 38px; background: #05070b; border: 1px solid rgba(255, 255, 255, .18); box-shadow: inset 0 0 0 2px #1a2030, 0 40px 80px rgba(0, 0, 0, .6); transform: translate3d(0, var(--vitrine-celular, 0px), 0); }
+.vitrine__celular img { display: block; width: 100%; height: auto; border-radius: 31px; }
 
 @media (max-width: 1100px) {
-  .alcance__corpo, .portal__corpo { grid-template-columns: 1fr; gap: 56px; }
+  .alcance__corpo { grid-template-columns: 1fr; gap: 56px; }
+  .portal__cabeca { grid-template-columns: 1fr; gap: 32px; }
   .alcance .cidades { flex-direction: row; }
   .certificacoes { row-gap: 32px; }
   .certificacoes li { flex-basis: calc((100% - 2 * 24px) / 3); }
 }
 @media (max-width: 860px) {
-  .alcance__corpo, .portal__corpo { gap: 40px; }
+  .alcance__corpo { gap: 40px; }
+  .vitrine { gap: 28px; }
+  .vitrine__aba { padding: 10px 16px; font-size: 13px; }
+  .vitrine__aba::after { left: 16px; right: 16px; }
+  .vitrine__palco { padding: 0 0 26%; }
+  .vitrine__navegador { border-radius: 10px; }
+  .previa__barra { padding: 9px 12px; }
+  .previa__barra span { margin-left: 6px; font-size: 11px; }
+  .vitrine__card { display: none; }
+  .vitrine__celular { width: 28%; right: 4%; padding: 4px; border-radius: 22px; }
+  .vitrine__celular img { border-radius: 18px; }
   .alcance .cidades { flex-direction: column; }
   .time__conteudo { gap: 32px; }
   .certificacoes { gap: 24px 20px; }
   .certificacoes li { flex-basis: calc((100% - 20px) / 2); }
   .certificacoes b { font-size: 28px; }
-  .previa__menu { display: none; }
-  .previa__tela { min-height: 0; }
-  .previa__conteudo { padding: 16px; gap: 14px; }
-  .previa__cards { gap: 8px; }
-  .previa__cards div { padding: 10px; }
-  .previa__grafico { height: 110px; }
 }
 
 .cards-atuacao { display: flex; gap: 32px; width: 100%; }

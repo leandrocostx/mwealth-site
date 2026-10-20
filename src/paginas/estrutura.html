@@ -107,35 +107,38 @@
     <!-- 04 CONSOLIDAÇÃO E PORTAL DO CLIENTE -->
     <section class="secao secao--escura portal" aria-labelledby="portal-titulo">
       <p class="rotulo rotulo--escuro" data-revelar>04 — Consolidação e portal do cliente</p>
-      <div class="portal__corpo">
-        <div class="portal__texto" data-revelar>
-          <h2 class="t-titulo1" id="portal-titulo">Todo o patrimônio, em <em>um só lugar</em>.</h2>
+      <div class="portal__cabeca" data-revelar>
+        <h2 class="t-titulo1" id="portal-titulo">Todo o patrimônio, em <em>um só lugar</em>.</h2>
+        <div class="portal__intro">
           <p class="texto-suave-escuro">Consolidamos as carteiras que cada cliente mantém em diferentes instituições, no Brasil e no exterior, além de imóveis, participações e outros ativos. Tudo aparece em relatórios periódicos e no portal do cliente.</p>
-          <ul class="portal__lista">
-            <li>Patrimônio total consolidado</li>
-            <li>Liquidez e posições por estratégia</li>
-            <li>Evolução da carteira ao longo do tempo</li>
-          </ul>
           <a class="botao botao--primario" href="https://portal.mwealth.com.br/login" target="_blank" rel="noopener">Acesse sua conta</a>
         </div>
-        <!-- prévia ilustrativa: trocar pelo print real do portal quando o acesso de teste chegar -->
-        <figure class="portal__previa" data-revelar aria-label="Prévia ilustrativa do portal do cliente">
-          <div class="previa">
-            <div class="previa__barra"><i></i><i></i><i></i><span>portal.mwealth.com.br</span></div>
-            <div class="previa__tela">
-              <div class="previa__menu"><b></b><span></span><span></span><span></span><span></span></div>
-              <div class="previa__conteudo">
-                <div class="previa__cards"><div><span></span><b></b></div><div><span></span><b></b></div><div><span></span><b></b></div></div>
-                <div class="previa__grafico">
-                  <svg viewBox="0 0 400 140" preserveAspectRatio="none" aria-hidden="true"><path d="M0 120 C40 112 60 104 90 100 S150 86 180 80 S240 62 270 58 S330 40 360 30 S390 22 400 18" fill="none" stroke="#5d73af" stroke-width="2.5"/><path d="M0 120 C40 112 60 104 90 100 S150 86 180 80 S240 62 270 58 S330 40 360 30 S390 22 400 18 V140 H0Z" fill="#5d73af" fill-opacity=".12"/></svg>
-                </div>
-                <div class="previa__linhas"><span></span><span></span><span></span></div>
-              </div>
+      </div>
+
+      <!-- Vitrine do portal: prints reais (20/10/2026) de uma carteira consolidada. As abas trocam a tela do navegador
+           e giram sozinhas enquanto a vitrine está na tela. Originais em mwealth/assets/web/img/portal. -->
+      <figure class="vitrine" data-vitrine data-revelar>
+        <div class="vitrine__abas" role="tablist" aria-label="Telas do portal">
+          <button class="vitrine__aba" type="button" role="tab" aria-selected="true" aria-controls="vitrine-tela-0" id="vitrine-aba-0" data-vitrine-aba="0" data-url="portal.mwealth.com.br/dashboard">Patrimônio</button>
+          <button class="vitrine__aba" type="button" role="tab" aria-selected="false" aria-controls="vitrine-tela-1" id="vitrine-aba-1" data-vitrine-aba="1" data-url="portal.mwealth.com.br/carteira" tabindex="-1">Posições</button>
+          <button class="vitrine__aba" type="button" role="tab" aria-selected="false" aria-controls="vitrine-tela-2" id="vitrine-aba-2" data-vitrine-aba="2" data-url="portal.mwealth.com.br/carteira" tabindex="-1">Liquidez</button>
+        </div>
+        <div class="vitrine__palco">
+          <div class="vitrine__navegador">
+            <div class="previa__barra" aria-hidden="true"><i></i><i></i><i></i><span data-vitrine-url>portal.mwealth.com.br/dashboard</span></div>
+            <div class="vitrine__telas">
+              <img class="vitrine__tela ativa" id="vitrine-tela-0" role="tabpanel" aria-labelledby="vitrine-aba-0" src="/assets/img/portal/portal-dashboard-1440.webp" srcset="/assets/img/portal/portal-dashboard-1440.webp 1440w, /assets/img/portal/portal-dashboard-2880.webp 2880w" sizes="(max-width: 860px) 100vw, 80vw" width="1440" height="940" loading="lazy" alt="Dashboard do portal: patrimônio total de R$ 2.478.421, rentabilidade, meta versus realizado e o gráfico de evolução da carteira">
+              <img class="vitrine__tela" id="vitrine-tela-1" role="tabpanel" aria-labelledby="vitrine-aba-1" src="/assets/img/portal/portal-posicoes-1440.webp" srcset="/assets/img/portal/portal-posicoes-1440.webp 1440w, /assets/img/portal/portal-posicoes-2880.webp 2880w" sizes="(max-width: 860px) 100vw, 80vw" width="1440" height="940" loading="lazy" alt="Posições por estratégia: cada fundo e título com valor atual, participação, rentabilidade e ganho no ano">
+              <img class="vitrine__tela" id="vitrine-tela-2" role="tabpanel" aria-labelledby="vitrine-aba-2" src="/assets/img/portal/portal-liquidez-1440.webp" srcset="/assets/img/portal/portal-liquidez-1440.webp 1440w, /assets/img/portal/portal-liquidez-2880.webp 2880w" sizes="(max-width: 860px) 100vw, 80vw" width="1440" height="940" loading="lazy" alt="Liquidez da carteira por faixa de prazo, do resgate diário até mais de 720 dias">
             </div>
           </div>
-          <figcaption>Prévia ilustrativa</figcaption>
-        </figure>
-      </div>
+          <img class="vitrine__card" src="/assets/img/portal/portal-card-patrimonio-443.webp" srcset="/assets/img/portal/portal-card-patrimonio-443.webp 443w, /assets/img/portal/portal-card-patrimonio-886.webp 886w" sizes="(max-width: 860px) 46vw, 360px" width="443" height="433" loading="lazy" alt="Detalhe do patrimônio total: ganho financeiro no mês e no ano e patrimônio inicial">
+          <div class="vitrine__celular">
+            <img src="/assets/img/portal/portal-celular-390.webp" srcset="/assets/img/portal/portal-celular-390.webp 390w, /assets/img/portal/portal-celular-780.webp 780w" sizes="(max-width: 860px) 32vw, 240px" width="390" height="844" loading="lazy" alt="O mesmo portal no celular">
+          </div>
+        </div>
+        <figcaption>Portal do cliente · no computador e no celular</figcaption>
+      </figure>
     </section>
 
     <!-- @parte chamada-final -->

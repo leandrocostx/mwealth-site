@@ -357,6 +357,66 @@
     b.textContent = aberto ? 'Ler menos' : 'Ler mais';
   }));
 
+  /* ---------- vitrine do portal: abas que trocam a tela, giro automático e paralaxe leve ---------- */
+  $$('[data-vitrine]').forEach(vitrine => {
+    const abas = $$('[data-vitrine-aba]', vitrine);
+    const telas = $$('.vitrine__tela', vitrine);
+    const url = $('[data-vitrine-url]', vitrine);
+    const TEMPO = 6000;
+    let atual = 0, timer = null, parado = false, naTela = false, pausada = false;
+
+    const mostrar = (i, foco) => {
+      atual = (i + abas.length) % abas.length;
+      abas.forEach((a, n) => { const sim = n === atual; a.setAttribute('aria-selected', sim); a.tabIndex = sim ? 0 : -1; });
+      telas.forEach((t, n) => t.classList.toggle('ativa', n === atual));
+      if (url) url.textContent = abas[atual].dataset.url;
+      if (foco) abas[atual].focus();
+      agendar();
+    };
+    const agendar = () => {
+      clearTimeout(timer);
+      const girar = !reduzir && !parado && naTela && !pausada;
+      vitrine.classList.remove('girando');
+      if (!girar) return;
+      void vitrine.offsetWidth; // reinicia a barrinha de tempo da aba
+      vitrine.classList.add('girando');
+      timer = setTimeout(() => mostrar(atual + 1), TEMPO);
+    };
+    vitrine.style.setProperty('--vitrine-tempo', TEMPO + 'ms');
+
+    // quem escolhe uma aba assume o controle: o giro para
+    abas.forEach((a, n) => a.addEventListener('click', () => { parado = true; mostrar(n); }));
+    vitrine.querySelector('[role="tablist"]').addEventListener('keydown', e => {
+      const passo = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+      if (!passo) return;
+      e.preventDefault(); parado = true; mostrar(atual + passo, true);
+    });
+    vitrine.addEventListener('mouseenter', () => { pausada = true; agendar(); });
+    vitrine.addEventListener('mouseleave', () => { pausada = false; agendar(); });
+
+    // as outras telas só baixam quando a vitrine chega perto
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(([e]) => { naTela = e.isIntersecting; agendar(); }, { threshold: 0.35 }).observe(vitrine);
+    }
+
+    // paralaxe: card e celular andam um pouco mais devagar que o navegador
+    const palco = $('.vitrine__palco', vitrine);
+    if (!reduzir && palco) {
+      let pedido = false;
+      const mover = () => {
+        pedido = false;
+        const r = palco.getBoundingClientRect();
+        const p = limitar((innerHeight - r.top) / (innerHeight + r.height)) * 2 - 1; // -1 entrando, 1 saindo
+        palco.style.setProperty('--vitrine-card', (p * -28).toFixed(1) + 'px');
+        palco.style.setProperty('--vitrine-celular', (p * -48).toFixed(1) + 'px');
+      };
+      const pedir = () => { if (!pedido) { pedido = true; requestAnimationFrame(mover); } };
+      addEventListener('scroll', pedir, { passive: true });
+      addEventListener('resize', pedir);
+      mover();
+    }
+  });
+
   /* ---------- copiar link do post ---------- */
   $$('[data-copiar-link]').forEach(b => b.addEventListener('click', async () => {
     try { await navigator.clipboard.writeText(location.href); } catch (e) { return; }
