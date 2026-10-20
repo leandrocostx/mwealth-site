@@ -919,8 +919,12 @@ p, li, blockquote { text-wrap: pretty; }
    branco e corta o azul. Se o fornecedor mudar esse layout, rever as medidas. */
 .aviso-pagina { padding-top: 92px; background: var(--marinho); }
 .aviso-pagina__quadro { background: var(--branco); }
-.aviso-pagina__janela { position: relative; overflow: hidden; width: min(100%, 1280px); height: max(calc(100svh - 92px), 560px); margin-inline: auto; }
-.aviso-pagina__janela iframe { position: absolute; top: -120px; left: 50%; width: 125%; height: calc(100% + 240px); transform: translateX(-50%); border: 0; }
+/* A largura do iframe soma a barra de rolagem da página deles (~17px no Windows, 0 no Mac/celular), medida em
+   aviso.html: sem isso o quadro branco fica mais estreito e aparece uma faixa azul à direita. +5px e -2px deixam o
+   quadro 2px maior que a janela de cada lado, para não sobrar fio azul por arredondamento. Janela até 1276px porque
+   o quadro deles para de crescer em 1280px. */
+.aviso-pagina__janela { position: relative; overflow: hidden; width: min(100%, 1276px); height: max(calc(100svh - 92px), 560px); margin-inline: auto; }
+.aviso-pagina__janela iframe { position: absolute; top: -120px; left: calc(-12.5% - 2px); width: calc(125% + 5px + var(--barra-rolagem, 0px)); height: calc(100% + 240px); border: 0; }
 @media (max-width: 860px) {
   .aviso-pagina { padding-top: 68px; }
   .aviso-pagina__quadro { padding-top: 24px; }

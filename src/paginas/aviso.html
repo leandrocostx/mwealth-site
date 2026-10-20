@@ -18,6 +18,17 @@
     </div>
   </main>
 
+  <script>
+    // largura da barra de rolagem deste navegador (a da página embutida é igual); usada no CSS do iframe
+    (() => {
+      const d = document.createElement('div');
+      d.style.cssText = 'position:absolute;top:-999px;width:100px;height:100px;overflow:scroll';
+      document.body.appendChild(d);
+      document.documentElement.style.setProperty('--barra-rolagem', (d.offsetWidth - d.clientWidth) + 'px');
+      d.remove();
+    })();
+  </script>
+
   <!-- @parte rodape -->
   <!-- @parte scripts -->
 </body>
