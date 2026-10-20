@@ -360,7 +360,8 @@
   /* ---------- vitrine do portal: abas que trocam a tela, giro automático e paralaxe leve ---------- */
   $$('[data-vitrine]').forEach(vitrine => {
     const abas = $$('[data-vitrine-aba]', vitrine);
-    const telas = $$('.vitrine__tela', vitrine);
+    const telas = $$('.vitrine__telas .vitrine__tela', vitrine);
+    const telasCelular = $$('.vitrine__celular .vitrine__tela', vitrine);
     const url = $('[data-vitrine-url]', vitrine);
     const TEMPO = 6000;
     let atual = 0, timer = null, parado = false, naTela = false, pausada = false;
@@ -368,7 +369,7 @@
     const mostrar = (i, foco) => {
       atual = (i + abas.length) % abas.length;
       abas.forEach((a, n) => { const sim = n === atual; a.setAttribute('aria-selected', sim); a.tabIndex = sim ? 0 : -1; });
-      telas.forEach((t, n) => t.classList.toggle('ativa', n === atual));
+      [telas, telasCelular].forEach(lista => lista.forEach((t, n) => t.classList.toggle('ativa', n === atual)));
       if (url) url.textContent = abas[atual].dataset.url;
       if (foco) abas[atual].focus();
       agendar();
