@@ -638,7 +638,7 @@ p, li, blockquote { text-wrap: pretty; }
 .vitrine__aba[aria-selected="true"] { background: var(--bege); color: var(--marinho); }
 /* enquanto gira sozinha, a aba ativa mostra o tempo até a próxima tela */
 .vitrine__aba::after { content: ""; position: absolute; left: 22px; right: 22px; bottom: 5px; height: 1px; background: currentColor; opacity: .35; transform: scaleX(0); transform-origin: left; }
-.vitrine.girando .vitrine__aba[aria-selected="true"]::after { animation: vitrine-tempo var(--vitrine-tempo, 6s) linear forwards; }
+.vitrine.girando .vitrine__aba[aria-selected="true"]::after { animation: vitrine-tempo var(--vitrine-tempo, 4s) linear forwards; }
 @keyframes vitrine-tempo { to { transform: scaleX(1); } }
 
 .vitrine__palco { position: relative; isolation: isolate; width: 100%; padding: 0 10% 10%; }

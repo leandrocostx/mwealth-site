@@ -363,8 +363,8 @@
     const telas = $$('.vitrine__telas .vitrine__tela', vitrine);
     const telasCelular = $$('.vitrine__celular .vitrine__tela', vitrine);
     const url = $('[data-vitrine-url]', vitrine);
-    const TEMPO = 6000;
-    let atual = 0, timer = null, parado = false, naTela = false, pausada = false;
+    const TEMPO = 4000;
+    let atual = 0, timer = null, naTela = false;
 
     const mostrar = (i, foco) => {
       atual = (i + abas.length) % abas.length;
@@ -376,7 +376,7 @@
     };
     const agendar = () => {
       clearTimeout(timer);
-      const girar = !reduzir && !parado && naTela && !pausada;
+      const girar = !reduzir && naTela;
       vitrine.classList.remove('girando');
       if (!girar) return;
       void vitrine.offsetWidth; // reinicia a barrinha de tempo da aba
@@ -385,19 +385,17 @@
     };
     vitrine.style.setProperty('--vitrine-tempo', TEMPO + 'ms');
 
-    // quem escolhe uma aba assume o controle: o giro para
-    abas.forEach((a, n) => a.addEventListener('click', () => { parado = true; mostrar(n); }));
+    // clicar numa aba mostra a tela e recomeça a contagem; o giro continua
+    abas.forEach((a, n) => a.addEventListener('click', () => mostrar(n)));
     vitrine.querySelector('[role="tablist"]').addEventListener('keydown', e => {
       const passo = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
       if (!passo) return;
-      e.preventDefault(); parado = true; mostrar(atual + passo, true);
+      e.preventDefault(); mostrar(atual + passo, true);
     });
-    vitrine.addEventListener('mouseenter', () => { pausada = true; agendar(); });
-    vitrine.addEventListener('mouseleave', () => { pausada = false; agendar(); });
 
     // as outras telas só baixam quando a vitrine chega perto
     if ('IntersectionObserver' in window) {
-      new IntersectionObserver(([e]) => { naTela = e.isIntersecting; agendar(); }, { threshold: 0.35 }).observe(vitrine);
+      new IntersectionObserver(([e]) => { naTela = e.isIntersecting; agendar(); }, { threshold: 0.2 }).observe(vitrine);
     }
 
     // paralaxe: o celular anda um pouco mais devagar que o navegador
