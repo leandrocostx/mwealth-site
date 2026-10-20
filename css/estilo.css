@@ -496,7 +496,11 @@ p, li, blockquote { text-wrap: pretty; }
 .rodape__selos-aviso { display: flex; align-items: center; gap: 64px; padding-top: 56px; border-top: 1px solid var(--borda-escuro); }
 .rodape__selos { display: flex; align-items: center; gap: 32px; }
 .rodape__selos img { height: 40px; width: auto; object-fit: contain; opacity: .7; }   /* os selos já são brancos */
-.rodape__aviso { flex: 1; font-size: 14px; line-height: 1.6; color: var(--lilas); }
+.rodape__aviso { flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; font-size: 14px; line-height: 1.6; color: var(--lilas); }
+.rodape__aviso-texto { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
+.rodape__aviso.aberto .rodape__aviso-texto { display: block; -webkit-line-clamp: unset; line-clamp: none; }
+.rodape__aviso-botao { font: 500 13px/1.5 var(--fonte-texto); color: var(--bege); text-decoration: underline; text-underline-offset: 3px; transition: color .3s; }
+.rodape__aviso-botao:hover { color: var(--branco); }
 .rodape__barra { display: flex; justify-content: space-between; gap: 24px; padding-top: 24px; border-top: 1px solid var(--borda-escuro); font-size: 14px; line-height: 1.5; color: var(--lilas); }
 .rodape__barra a { transition: color .3s; }
 .rodape__barra a:hover { color: var(--bege); }
@@ -814,6 +818,7 @@ p, li, blockquote { text-wrap: pretty; }
 .divisor { width: 100%; height: 1px; background: var(--borda-claro); }
 .grade-posts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 72px 60px; width: 100%; }
 .grade-posts .card-post[hidden] { display: none; }
+.lista-posts .destaque[hidden], .lista-posts .divisor[hidden] { display: none; }
 .paginacao { display: flex; align-items: center; justify-content: center; gap: 40px; width: 100%; font: 500 15px/1 var(--fonte-texto); }
 .paginacao__anterior { color: var(--cinza); }
 .paginacao__paginas { display: flex; gap: 8px; }
@@ -906,3 +911,19 @@ p, li, blockquote { text-wrap: pretty; }
   .post-rodape-titulo > *, .destaque > *, .sobre__manifesto > *, .sobre__foto-numeros > * { flex: none !important; width: 100%; }
   .autoria { width: auto !important; }
 }
+
+/* ---------- aviso de privacidade ----------
+   O texto é a página do fornecedor de compliance (vsuitability.com), embutida como no site atual: eles mantêm o
+   conteúdo. Essa página tem fundo azul com um quadro branco no meio (80% da largura, no máximo 1280px, e ~120px de
+   azul em cima e embaixo). Como ela é de outro domínio, não dá para mudar a cor: a "janela" abaixo mostra só o quadro
+   branco e corta o azul. Se o fornecedor mudar esse layout, rever as medidas. */
+.aviso-pagina { padding-top: 92px; background: var(--marinho); }
+.aviso-pagina__quadro { background: var(--branco); }
+.aviso-pagina__janela { position: relative; overflow: hidden; width: min(100%, 1280px); height: max(calc(100svh - 92px), 560px); margin-inline: auto; }
+.aviso-pagina__janela iframe { position: absolute; top: -120px; left: 50%; width: 125%; height: calc(100% + 240px); transform: translateX(-50%); border: 0; }
+@media (max-width: 860px) {
+  .aviso-pagina { padding-top: 68px; }
+  .aviso-pagina__quadro { padding-top: 24px; }
+  .aviso-pagina__janela { height: max(calc(100svh - 92px), 480px); }
+}
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }

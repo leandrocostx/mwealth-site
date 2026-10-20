@@ -338,12 +338,23 @@
         c.hidden = !mostra;
         if (mostra) n++;
       });
+      // o destaque e a linha abaixo dele somem junto quando o post em destaque não é do tema escolhido
+      const destaque = document.querySelector('.lista-posts .destaque');
+      const divisor = document.querySelector('.lista-posts .divisor');
+      if (destaque && divisor) divisor.hidden = destaque.hidden;
       if (total) total.textContent = `${n} ${n === 1 ? 'conteúdo' : 'conteúdos'}`;
     }));
   });
   $$('[data-carregar-mais]').forEach(b => b.addEventListener('click', () => {
     $('.grade-posts').classList.add('mostrar-todos');
     b.remove();
+  }));
+
+  /* ---------- rodapé: abrir/fechar o aviso legal ---------- */
+  $$('[data-aviso-botao]').forEach(b => b.addEventListener('click', () => {
+    const aberto = b.closest('[data-aviso]').classList.toggle('aberto');
+    b.setAttribute('aria-expanded', String(aberto));
+    b.textContent = aberto ? 'Ler menos' : 'Ler mais';
   }));
 
   /* ---------- copiar link do post ---------- */
