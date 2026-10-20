@@ -632,14 +632,22 @@ p, li, blockquote { text-wrap: pretty; }
 /* vitrine: navegador com as telas e celular à direita (prints reais do portal) */
 .vitrine { display: flex; flex-direction: column; align-items: center; gap: 40px; width: 100%; }
 .vitrine figcaption { text-align: center; font: 500 11px/1.6 var(--fonte-texto); letter-spacing: .14em; text-transform: uppercase; color: var(--lilas); }
-.vitrine__abas { display: inline-flex; gap: 4px; padding: 4px; border: 1px solid var(--borda-escuro); border-radius: 999px; background: rgba(255, 255, 255, .03); }
-.vitrine__aba { position: relative; overflow: hidden; padding: 11px 22px; border-radius: 999px; font: 500 14px/1 var(--fonte-texto); color: var(--lilas); transition: color .3s, background-color .3s; }
-.vitrine__aba:hover { color: var(--branco); }
-.vitrine__aba[aria-selected="true"] { background: var(--bege); color: var(--marinho); }
-/* enquanto gira sozinha, a aba ativa mostra o tempo até a próxima tela */
-.vitrine__aba::after { content: ""; position: absolute; left: 22px; right: 22px; bottom: 5px; height: 1px; background: currentColor; opacity: .35; transform: scaleX(0); transform-origin: left; }
-.vitrine.girando .vitrine__aba[aria-selected="true"]::after { animation: vitrine-tempo var(--vitrine-tempo, 4s) linear forwards; }
-@keyframes vitrine-tempo { to { transform: scaleX(1); } }
+/* abas ilustradas: ícone, título e uma linha; a barra de cima enche enquanto a tela está no ar */
+.vitrine__abas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; width: 80%; }
+.vitrine__aba { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: start; gap: 22px 16px; text-align: left; opacity: .5; transition: opacity .4s; }
+.vitrine__aba:hover { opacity: .8; }
+.vitrine__aba[aria-selected="true"] { opacity: 1; }
+.vitrine__aba-barra { grid-column: 1 / -1; position: relative; overflow: hidden; height: 2px; border-radius: 2px; background: var(--borda-escuro); }
+.vitrine__aba-barra i { position: absolute; inset: 0; background: var(--bege); transform: scaleX(0); transform-origin: left; }
+.vitrine__aba[aria-selected="true"] .vitrine__aba-barra i { transform: scaleX(1); }
+.vitrine.girando .vitrine__aba[aria-selected="true"] .vitrine__aba-barra i { animation: vitrine-tempo var(--vitrine-tempo, 4s) linear both; }
+@keyframes vitrine-tempo { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.vitrine__aba-icone { display: grid; place-items: center; width: 46px; height: 46px; border-radius: 12px; border: 1px solid var(--borda-escuro); background: rgba(255, 255, 255, .03); color: var(--lilas); transition: color .4s, border-color .4s, background-color .4s; }
+.vitrine__aba-icone svg { width: 22px; height: 22px; }
+.vitrine__aba[aria-selected="true"] .vitrine__aba-icone { color: var(--bege); border-color: rgba(220, 201, 177, .4); background: rgba(220, 201, 177, .08); }
+.vitrine__aba-texto { display: flex; flex-direction: column; gap: 6px; padding-top: 2px; }
+.vitrine__aba-texto b { font: 500 17px/1.25 var(--fonte-texto); color: var(--branco); }
+.vitrine__aba-texto small { font-size: 14px; line-height: 1.45; color: var(--lilas); }
 
 .vitrine__palco { position: relative; isolation: isolate; width: 100%; padding: 0 10% 10%; }
 .vitrine__palco::before { content: ""; position: absolute; z-index: -1; inset: 6% 4% 4%; background: radial-gradient(55% 55% at 50% 45%, rgba(93, 115, 175, .38), rgba(93, 115, 175, 0) 70%), radial-gradient(30% 35% at 18% 85%, rgba(220, 201, 177, .12), rgba(220, 201, 177, 0) 70%); filter: blur(30px); pointer-events: none; }
@@ -663,8 +671,12 @@ p, li, blockquote { text-wrap: pretty; }
 @media (max-width: 860px) {
   .alcance__corpo { gap: 40px; }
   .vitrine { gap: 28px; }
-  .vitrine__aba { padding: 10px 16px; font-size: 13px; }
-  .vitrine__aba::after { left: 16px; right: 16px; }
+  .vitrine__abas { width: 100%; gap: 14px; }
+  .vitrine__aba { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .vitrine__aba-icone { width: 38px; height: 38px; border-radius: 10px; }
+  .vitrine__aba-icone svg { width: 19px; height: 19px; }
+  .vitrine__aba-texto b { font-size: 14px; }
+  .vitrine__aba-texto small { display: none; }
   .vitrine__palco { padding: 0 0 26%; }
   .vitrine__navegador { border-radius: 10px; }
   .previa__barra { padding: 9px 12px; }
